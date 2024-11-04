@@ -1,0 +1,45 @@
+<div class="contenedor-nav">
+    <div class="contenedor-iconos">
+        <div class="icono-datos">
+            <fa-icon [icon]="iconoTelefono" style="color: #704cb6;" size="xl"></fa-icon><p>Atención telefónica las 24hs: 4211-54322 /  <fa-icon [icon]="iconoWpp" style="color: #704cb6;" size="xl"></fa-icon> Whatsapp: 11567288</p>
+        </div>
+        <div class="icono-datos">
+    
+            <fa-icon [icon]="iconoUbicacion" style="color: #704cb6;" size="xl"></fa-icon><p>Ubicación: Suipacha 986 - CABA</p>
+        </div>
+        <div class="icono-datos">
+            <fa-icon [icon]="iconoReloj" style="color: #704cb6;" size="xl"></fa-icon><p>Lunes-Viernes 8:00hs a 19:00hs - Sábados 8:00hs a 14:00hs</p>
+        </div>
+    
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-color">
+        <div class="container-fluid">
+            <div>
+                <img src="../../../assets/banner2.png" alt="" class="logo-navbar">
+            </div>
+            <div >
+                <ul class="nav" [style.gap.px]="10">
+                    <li class="nav-item nav-underline">
+                        <a class="nav-link"  [routerLink]="['']">Inicio</a>
+                    </li>
+                    <li class="nav-item nav-underline" *ngIf="!this.sesion.sesionActiva()">
+                        <a class="nav-link" [routerLink]="['/login']">Iniciar Sesión</a>
+                    </li>
+                    <li class="nav-item nav-underline" *ngIf="this.sesion.sesionActiva()">
+                        <a class="nav-link" (click)="cerrarSesion()">Cerrar Sesión</a>
+                    </li>
+                    <!-- <li class="nav-item nav-underline" *ngIf="this.sesion.sesionActiva()">
+                        <a class="nav-link" [routerLink]="['encuesta']">Encuesta</a>
+                    </li>
+                    <li class="nav-item nav-underline" *ngIf="!this.sesion.sesionActiva()">
+                        <a class="nav-link" [routerLink]="['login']">Inicie Sesión</a>
+                    </li> -->
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+
+

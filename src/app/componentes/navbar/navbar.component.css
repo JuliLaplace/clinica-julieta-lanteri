@@ -1,0 +1,33 @@
+.contenedor-nav{
+    background-color: #dd8ebe;
+    height: 15vh;
+}
+.contenedor-iconos{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+
+}
+
+.icono-datos{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    
+}
+p{
+    margin: 5px;
+}
+
+
+.nav-link{
+    color: #704cb6;
+    font-weight: 500;
+    font-size: 20px;
+    margin-right: 15px;
+}
+.logo-navbar {
+    width: 200px;
+}

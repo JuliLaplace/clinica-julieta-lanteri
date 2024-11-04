@@ -1,0 +1,143 @@
+.box-form {
+    display: flex;
+    flex-direction: row;
+    width: 60%;
+    height: 550px;
+    background: #FFFFFF;
+    border-radius: 10px;
+    display: flex;
+    box-shadow: 0 0 20px 6px #090b6f85;
+
+
+    .card-izquierda {
+        color: #FFFFFF;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-image: url("../../../assets/clinica.jpg");
+        overflow: hidden;
+
+
+        .overlay {
+            padding: 30px;
+            width: 100%;
+            height: 100%;
+            background: #5961f9ad;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            h1 {
+                
+                font-size: 100px;
+                font-weight: 900;
+                margin-top: 50px;
+                margin-bottom: 30px;
+            }
+
+
+        }
+    }
+
+    .card-derecha {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 50%;
+
+        h5 {
+            font-size: 50px;
+            color: #704cb6;
+        }
+
+        p {
+            font-size: 16px;
+            color: rgb(49, 47, 49);
+            text-align: center;
+            margin-top: 20px;
+        }
+        .error-login {
+            margin-bottom: 15px;
+            color: rgb(255, 0, 0);
+            height: 10px; 
+            visibility: hidden; 
+            font-weight: bold;
+        }
+        .error-login.show {
+            visibility: visible;
+        }
+
+        a {
+            color: #704cb6;
+            font-weight: 700;
+        }
+
+        .inputs {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 20px;
+        }
+
+        input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+            border: none;
+            outline: none;
+            border-bottom: 2px solid #B0B3B9;
+            text-align: center;
+        }
+
+
+        .btn-ingreso {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        button {
+            color: #fff;
+            font-size: 16px;
+            padding: 12px 30px;
+            border-radius: 50px;
+            border: 0;
+            outline: 0;
+            box-shadow: 0px 1px 10px 0px #913b9ca6;
+            background-image: linear-gradient(135deg, #ac4a9f 10%, #b9719e 100%);
+        }
+
+        .btn-acceso {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-around;
+
+
+            button {
+                margin: 20px;
+            }
+        }
+    }
+}
+
+
+
+.espejo-animado {
+    animation: espejo 2s infinite alternate;
+}
+
+@keyframes espejo {
+    from {
+        transform: scaleX(1);
+    }
+
+    to {
+        transform: scaleX(-1);
+    }
+}
+

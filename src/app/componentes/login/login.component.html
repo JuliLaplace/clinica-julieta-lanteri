@@ -1,0 +1,41 @@
+<div class="contenedor">
+    <div class="box-form">
+
+        <div class="card-izquierda">
+            <div class="overlay">
+                <h1>Bienvenido</h1>
+                <img src="../../../assets/icono-iso.png" alt="icono clinica" class="espejo-animado">
+            </div>
+        </div>
+
+
+        <div class="card-derecha">
+            <h5>Iniciar Sesión</h5>
+
+            <div class="inputs">
+                <input type="text" [(ngModel)]="email" placeholder="Ingrese usuario">
+                <input type="password" [(ngModel)]="password"  placeholder="Ingrese contraseña">
+                <p>¿No tenés una cuenta? <a [routerLink]="['/registro']">Registrate</a></p>
+            </div>
+
+            <div class="btn-ingreso">
+                <button (click)="login()">Ingresar</button>
+                <p class="error-login" [class.show]="flagError">{{errorMsj}}</p>
+            </div>
+            
+
+            <div class="btn-acceso">
+                <button (click)="registroAutomatico('administador')">
+                    Admin
+                </button>
+                <button (click)="registroAutomatico('especialista')">
+                    Especialista
+                </button>
+                <button (click)="registroAutomatico('paciente')">
+                    Paciente
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
