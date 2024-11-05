@@ -1,0 +1,95 @@
+<div class="col">
+  
+    <div class="card">
+      <div class="card-header py-3">
+        <h4 class="my-0">Datos del Paciente</h4>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="altaPersona" (ngSubmit)="cargarPersona()">
+
+          <div class="row g-3">
+
+            <div class="col-12">
+              <label for="nombre" class="form-label">Nombre</label>
+              <input type="text" formControlName="nombre" class="form-control" placeholder="Ingrese nombre">
+              <div [ngClass]="{'visible': servicioForm.controlConError(altaPersona, 'nombre')}" class="error-message">
+                <p>{{servicioForm.mensajeError(altaPersona, 'nombre') }}</p>
+              </div>
+            </div>
+            <div class="col-12">
+              <label for="apellido" class="form-label">Apellido</label>
+              <input type="text" formControlName="apellido" class="form-control" placeholder="Ingrese apellido">
+              <div [ngClass]="{'visible': servicioForm.controlConError(altaPersona, 'apellido')}" class="error-message">
+                <p>{{servicioForm.mensajeError(altaPersona, 'apellido') }}</p>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label for="edad" class="form-label">Edad</label>
+              <input type="number" formControlName="edad" class="form-control" placeholder="Ingrese edad">
+              <div [ngClass]="{'visible': servicioForm.controlConError(altaPersona, 'edad')}" class="error-message">
+                <p>{{servicioForm.mensajeError(altaPersona, 'edad') }}</p>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label for="dni" class="form-label">DNI</label>
+              <input type="number" formControlName="dni" class="form-control" placeholder="Ingrese DNI">
+              <div [ngClass]="{'visible': servicioForm.controlConError(altaPersona, 'dni')}" class="error-message">
+                <p>{{servicioForm.mensajeError(altaPersona, 'dni') }}</p>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label for="firstName" class="form-label">Obra Social</label>
+              <input type="text" formControlName="obraSocial" class="form-control" placeholder="Ingrese su Obra Social">
+              <div [ngClass]="{'visible': servicioForm.controlConError(altaPersona, 'obraSocial')}"
+                class="error-message">
+                <p>{{servicioForm.mensajeError(altaPersona, 'obraSocial') }}</p>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label for="email" class="form-label">Correo electronico</label>
+              <input type="text" formControlName="email" class="form-control" placeholder="Ingrese su email">
+              <div [ngClass]="{'visible': servicioForm.controlConError(altaPersona, 'email')}" class="error-message">
+                <p>{{servicioForm.mensajeError(altaPersona, 'email') }}</p>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label for="pwd" class="form-label">Contraseña</label>
+              <input type="password" formControlName="pwd" class="form-control" placeholder="Ingrese su contraseña">
+              <div [ngClass]="{'visible': servicioForm.controlConError(altaPersona, 'pwd')}" class="error-message">
+                <p>{{servicioForm.mensajeError(altaPersona, 'pwd') }}</p>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <!-- <input formControlName="foto1" type="file" label="Foto 1" (change)="onInputChanged($event)"> -->
+              <input formControlName="foto1" type="file" label="Foto 1">
+            </div>
+            <div class="col-12">
+              <input formControlName="foto2" type="file" label="Foto 2">
+            </div>
+
+            <p>{{base64}}</p>
+            <div *ngIf="base64">
+              <img [src]="base64" alt="Imagen cargada" width="200" height="200">
+            </div>
+
+          </div>
+
+          <hr class="my-4">
+          <div class="btn-registrar">
+            <button class="w-50 btn btn-primary" type="submit" [disabled]="!this.altaPersona.valid">Agregar
+              Paciente</button>
+          </div>
+        </form>
+
+        <div class="mensaje-sesion">
+          <p>Ya tenés una cuenta? <a [routerLink]="['/login']">Inicia Sesión</a></p>
+        </div>
+      </div>
+    </div>
+  </div>

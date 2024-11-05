@@ -7,7 +7,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
-
+    padding-top: 15px;
 }
 
 .icono-datos{
@@ -29,5 +29,5 @@ p{
     margin-right: 15px;
 }
 .logo-navbar {
-    width: 200px;
+    width: 160px;
 }

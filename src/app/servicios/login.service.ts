@@ -25,7 +25,7 @@ export class LoginService {
 
     return createUserWithEmailAndPassword(this.auth, email, pwd)
       .then((res) => {
-        this.router.navigate(['/home']);
+        
         error.errorFlag = false;
         return error;
       })
@@ -63,7 +63,7 @@ export class LoginService {
 
     return signInWithEmailAndPassword(this.auth, email, pwd)
       .then((res) => {
-        this.router.navigate(['/home']);
+        // this.router.navigate(['/home']);
         return error;
       })
       .catch(

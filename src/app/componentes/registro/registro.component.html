@@ -1,90 +1,22 @@
 <div class="contenedor">
-    <div class="col">
-        <div class="card mb-4 rounded-3 shadow-sm">
-          <div class="card-header py-3">
-            <h4 class="my-0 fw-normal">Alta Animal</h4>
-          </div>
-          <div class="card-body">
-            <form class="needs-validation" [formGroup]="altaPersona" (ngSubmit)="cargarPersona()">
-            
-              <div class="row g-3">
-      
-                <div class="col-12">
-                  <label for="firstName" class="form-label">Nombre</label>
-                  <input type="text" formControlName="nombre" class="form-control" placeholder="Ingrese nombre">
-                  <!-- <div [ngClass]="{'visible': servicioForm.controlConError(altaAnimal, 'nombre')}" class="error-message">
-                    <p>{{servicioForm.mensajeError(altaPersona, 'nombre') }}</p>
-                  </div> -->
-                </div>
-                <div class="col-12">
-                    <label for="firstName" class="form-label">Apellido</label>
-                    <input type="text" formControlName="apellido" class="form-control" placeholder="Ingrese apellido">
-                    <!-- <div [ngClass]="{'visible': servicioForm.controlConError(altaAnimal, 'nombre')}" class="error-message">
-                      <p>{{servicioForm.mensajeError(altaPersona, 'nombre') }}</p>
-                    </div> -->
-                  </div>
+  <div *ngIf="loading" class="spinner">
+    <div class="spinner-container">
+      <img src="../../../assets/icono-iso.png" alt="spinner icono" class="espejo-animado">
+    </div>
+  </div>
 
-                  <div class="col-12">
-                    <label for="firstName" class="form-label">Edad</label>
-                    <input type="number" formControlName="edad" class="form-control" placeholder="Ingrese edad">
-                    <!-- <div [ngClass]="{'visible': servicioForm.controlConError(altaAnimal, 'nombre')}" class="error-message">
-                      <p>{{servicioForm.mensajeError(altaPersona, 'nombre') }}</p>
-                    </div> -->
-                  </div>
+  <div class="botonera">
+    <button (click)="seleccionarUsuario('paciente')">Paciente</button>
+    <button (click)="seleccionarUsuario('especialista')">Especialista</button>
+  </div>
 
-                  <div class="col-12">
-                    <label for="firstName" class="form-label">DNI</label>
-                    <input type="number" formControlName="dni" class="form-control" placeholder="Ingrese DNI">
-                    <!-- <div [ngClass]="{'visible': servicioForm.controlConError(altaAnimal, 'nombre')}" class="error-message">
-                      <p>{{servicioForm.mensajeError(altaPersona, 'nombre') }}</p>
-                    </div> -->
-                  </div>
+  <div *ngIf="botonSeleccionado=='paciente'" class="contenedor-form">
+    <app-formulario-paciente (loadingChange)="onLoadingChange($event)"></app-formulario-paciente>
+  </div>
+  <div *ngIf="botonSeleccionado=='especialista'" class="contenedor-form">
+    <app-formulario-especialista></app-formulario-especialista>
+  </div>
 
-                  <div class="col-12">
-                    <label for="firstName" class="form-label">Nombre</label>
-                    <input type="text" formControlName="nombre" class="form-control" placeholder="Ingrese nombre">
-                    <!-- <div [ngClass]="{'visible': servicioForm.controlConError(altaAnimal, 'nombre')}" class="error-message">
-                      <p>{{servicioForm.mensajeError(altaPersona, 'nombre') }}</p>
-                    </div> -->
-                  </div>
-      
-                <!-- <div class="col-12">
-                  <label for="tipo" class="form-label">Tipo</label>
-                  <select formControlName="tipo" class="form-control">
-                    <option value="" disabled selected>Seleccione un tipo de animal</option>
-                    <option [value]="tipos.Ave">{{tipos.Ave }}</option>
-                    <option [value]="tipos.Mamifero">{{ tipos.Mamifero }}</option>
-                    <option [value]="tipos.Reptil">{{ tipos.Reptil }}</option>
-                  </select>
-                  <div [ngClass]="{'visible': servicioForm.controlConError(altaAnimal, 'tipo')}" class="error-message">
-                    <p>{{ servicioForm.mensajeError(altaAnimal, 'tipo') }}</p>
-                  </div>
-                </div> -->
-      
-                <div class="col-12">
-                  <label>Cantidad de patas</label>
-                  <input type="number" formControlName="cantidadPatas" class="form-control" placeholder="Ingrese la cantidad de patas del animal">
-                  <!-- <div [ngClass]="{'visible': servicioForm.controlConError(altaAnimal, 'cantidadPatas')}" class="error-message">
-                    <p>{{ servicioForm.mensajeError(altaAnimal, 'cantidadPatas') }}</p>
-                  </div> -->
-                </div>
-      
-                <div class="col-12">
-                  <label >Peso Promedio</label>
-                  <input type="number" formControlName="pesoPromedio" class="form-control" placeholder="Ingrese el peso promedio del animal" >
-                  <!-- <div [ngClass]="{'visible': servicioForm.controlConError(altaAnimal, 'pesoPromedio')}" class="error-message">
-                    <p>{{ servicioForm.mensajeError(altaAnimal, 'pesoPromedio') }}</p>
-                  </div> -->
-                </div>
-      
-              </div>
-      
-              <hr class="my-4">
-      
-              <button class="w-100 btn btn-primary btn-lg" type="submit"  [disabled]="!this.altaPersona.valid">Agregar Persona</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    
+
+ 
 </div>

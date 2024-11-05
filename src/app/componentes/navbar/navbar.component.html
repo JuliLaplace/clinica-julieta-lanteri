@@ -26,14 +26,14 @@
                         <a class="nav-link" [routerLink]="['/login']">Iniciar Sesión</a>
                     </li>
                     <li class="nav-item nav-underline" *ngIf="this.sesion.sesionActiva()">
+                        <a class="nav-link" [routerLink]="['/seccion-usuarios']">Usuarios</a>
+                    </li>
+                    <li class="nav-item nav-underline" *ngIf="this.sesion.sesionActiva()">
                         <a class="nav-link" (click)="cerrarSesion()">Cerrar Sesión</a>
                     </li>
-                    <!-- <li class="nav-item nav-underline" *ngIf="this.sesion.sesionActiva()">
-                        <a class="nav-link" [routerLink]="['encuesta']">Encuesta</a>
+                    <li class="nav-item nav-underline" *ngIf="this.sesion.sesionActiva()">
+                        <a class="nav-link">{{this.sesion.getUsuario()}}</a>
                     </li>
-                    <li class="nav-item nav-underline" *ngIf="!this.sesion.sesionActiva()">
-                        <a class="nav-link" [routerLink]="['login']">Inicie Sesión</a>
-                    </li> -->
                     
                 </ul>
             </div>

@@ -1,18 +1,19 @@
-.contenedor{
+:host {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 100%;
 }
-.contenedor-form {
-    display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh; /* Para centrar verticalmente ocupando la pantalla completa */
-  padding: 20px;
-
-  }
-
+  
+.col {
+    max-width: 800px; 
+    width: 100%;
+ }
+  
+.card {
+    width: 100%; 
+}
+  
 .botonera{
     background-color:#f1d8e8;
     height: 150px;
@@ -36,6 +37,40 @@ button{
         margin: 10px;
     
 }
+
+h4{
+    text-align: center;
+}
+
+
+.btn-registrar{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mensaje-sesion{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    a {
+        color: #704cb6;
+        font-weight: 700;
+    }
+}
+
+.error-message {
+    margin-bottom: 15px;
+    color: rgb(255, 0, 0);
+    height: 10px; 
+    visibility: hidden; 
+    font-weight: bold;
+}
+.error-message.show {
+    visibility: visible;
+}
+
 
 /*SPINNER*/
 .spinner {
