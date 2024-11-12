@@ -4,7 +4,7 @@
         <h4 class="my-0">Datos del Especialista</h4>
       </div>
       <div class="card-body">
-        <form [formGroup]="altaPersona" (ngSubmit)="cargarPersona()">
+        <form [formGroup]="altaPersona">
 
           <div class="row g-3">
 
@@ -24,7 +24,7 @@
             </div>
 
             <div class="col-12">
-              <label for="edad" class="form-label">Edad</label>
+              <label class="form-label">Edad</label>
               <input type="number" formControlName="edad" class="form-control" placeholder="Ingrese edad">
               <div [ngClass]="{'visible': servicioForm.controlConError(altaPersona, 'edad')}" class="error-message">
                 <p>{{servicioForm.mensajeError(altaPersona, 'edad') }}</p>
@@ -32,23 +32,28 @@
             </div>
 
             <div class="col-12">
-              <label for="dni" class="form-label">DNI</label>
+              <label class="form-label">DNI</label>
               <input type="number" formControlName="dni" class="form-control" placeholder="Ingrese DNI">
               <div [ngClass]="{'visible': servicioForm.controlConError(altaPersona, 'dni')}" class="error-message">
                 <p>{{servicioForm.mensajeError(altaPersona, 'dni') }}</p>
               </div>
             </div>
 
-            
+            <div  class="col-12">
+              <input type="text" class="form-control" placeholder="Agregar especialidad">
+              <button (click)="agregarEspecialidad()">Agregar</button>
+            </div>
             <div class="col-12">
-              <label for="especialidad" class="form-label">Tipo</label>
-              <select formControlName="especialidad" class="form-control">
-                <option value="" disabled selected>Seleccione una especialidadl</option>
-                <option value="cardiologia">Cardiologia</option>
-                <option value="ginecologia">Ginecologia</option>
-                <option value="dermatologia">ermatologia</option>
-                <option value="oftalmologia">oftalmologia</option>
-              </select>
+              
+              <mat-form-field>
+                <mat-label>Especialidades</mat-label>
+                <mat-select formControlName="especialidad" multiple>
+                  <mat-option *ngFor="let item of dataEspecialidades.coleccionEspecialidades" [value]="item.especialidad">
+                    {{ item.especialidad }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
               <div [ngClass]="{'visible': servicioForm.controlConError(altaPersona, 'especialidad')}" class="error-message">
                 <p>{{ servicioForm.mensajeError(altaPersona, 'especialidad') }}</p>
               </div>
@@ -72,19 +77,22 @@
             </div>
 
             <div class="col-12">
-              <input formControlName="foto1" type="file" label="Foto 1" (change)="onInputChanged($event)">
+              <input  type="file" label="Foto 1"  (change)="onFileSelected($event, 'foto1')">
             </div>
 
           </div>
 
+          <div class="captcha">
+            <re-captcha (resolved)="resolved($event)" siteKey="6LfjUXoqAAAAAK28LGBZ8H4X4mv19HBcHPqL3PfB"></re-captcha>
+          </div>
           <hr class="my-4">
           <div class="btn-registrar">
-            <button class="w-50 btn btn-primary" type="submit" [disabled]="!this.altaPersona.valid">Agregar
-              Paciente</button>
+            <button class="w-50 btn btn-primary" (click)="cargarPersona()" [disabled]="!this.altaPersona.valid  || !captchaResponse || !foto1">Agregar
+              Especialista</button>
           </div>
         </form>
 
-        <div class="mensaje-sesion">
+        <div class="mensaje-sesion" *ngIf="!sesion.esAdmin()">
           <p>Ya tenés una cuenta? <a [routerLink]="['/login']">Inicia Sesión</a></p>
         </div>
       </div>

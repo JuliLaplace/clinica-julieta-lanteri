@@ -1,0 +1,32 @@
+.card{
+    width: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #704cb6;
+
+    img{
+        max-width: 300px;
+        height: auto;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+    }
+}
+.card-body{
+    background-color: aliceblue;
+    width: 100%;
+    h5{
+        text-align: center;
+    }
+}
+.icono-datos{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 5px;
+    p{
+        margin: 0 10px;
+    }
+    
+}

@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signOut } from '@angular/fire/auth';
 import { LoaderService } from './loader.service';
 import { Router } from '@angular/router';
+import { SesionService } from './sesion.service';
+import { DataUsuariosService } from './data-usuarios.service';
+import { TipoUsuario } from '../enumerables/tipo-usuario';
 
 export interface loginError {
   errorFlag: boolean;
@@ -13,19 +16,31 @@ export interface loginError {
 })
 export class LoginService {
 
-  constructor(private auth: Auth, private router: Router) { }
+  constructor(private auth: Auth, private router: Router, private sesion: SesionService, private dataUsuarios : DataUsuariosService) { }
 
 
   async registrar(email: string, pwd: string): Promise<loginError> {
-    
+    let esAdmin = this.sesion.esAdmin();
+    let user = this.auth.currentUser;
     let error: loginError = {
       errorFlag: false,
       errorMsj: ""
     }
+    
 
     return createUserWithEmailAndPassword(this.auth, email, pwd)
       .then((res) => {
         
+        sendEmailVerification(res.user);
+        
+        if(!esAdmin){
+          this.auth.signOut();
+          this.router.navigate(['/login']);
+        }
+        if(esAdmin){
+          this.auth.updateCurrentUser(user);
+        }
+
         error.errorFlag = false;
         return error;
       })
@@ -63,8 +78,36 @@ export class LoginService {
 
     return signInWithEmailAndPassword(this.auth, email, pwd)
       .then((res) => {
-        // this.router.navigate(['/home']);
-        return error;
+        
+        // if(res.user.emailVerified){
+         
+        //   this.router.navigate(['/home']);
+        //   return error;
+        // }else{
+        //   error.errorFlag = true;
+        //   error.errorMsj = "Cuenta no verificada."
+        //   this.auth.signOut();
+        //   return error;
+        // }
+        if (!res.user.emailVerified) { //aca me fijo si ninguno tiene la cuenta verificada
+          error.errorFlag = true;
+          error.errorMsj = "Cuenta no verificada.";
+          this.auth.signOut();
+          return error;
+        }
+        return this.dataUsuarios.obtenerUsuarioPorEmail(email)
+        .then((usuario) => {
+          if (usuario && usuario.tipo === TipoUsuario.especialista && !usuario.habilitado) {
+            error.errorFlag = true;
+            error.errorMsj = "Especialista no habilitado.";
+            this.auth.signOut();
+            return error;
+          }
+
+          this.router.navigate(['/home']);
+          return error;
+        });
+
       })
       .catch(
         (e) => {

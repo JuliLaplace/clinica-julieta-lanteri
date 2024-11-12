@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, Firestore, getDocs, query, where } from '@angular/fire/firestore';
-import { SesionService } from './sesion.service';
+import { addDoc, collection, collectionData, doc, Firestore, getDocs, query, updateDoc, where } from '@angular/fire/firestore';
 import { TipoUsuario } from '../enumerables/tipo-usuario';
-import { Observable } from 'rxjs';
 
 export interface Usuario{
   id?: string;
@@ -11,12 +9,12 @@ export interface Usuario{
   edad: number;
   dni: number;
   mail: string;
-  contrasena: string;
   tipo: TipoUsuario;
-  obraSocial?: string; 
-  especialidad?: string; 
+  obraSocial: string |null; 
+  especialidad: string[] | null; 
   imagenPerfil1: string; 
-  imagenPerfil2?: string;
+  imagenPerfil2: string | null;
+  habilitado : boolean | null;
 }
 
 @Injectable({
@@ -25,9 +23,13 @@ export interface Usuario{
 export class DataUsuariosService {
 
   public coleccionUsuarios:Usuario[] = [];
+  public coleccionPacientes:Usuario[] = [];
+  public coleccionEspecialistas:Usuario[] = [];
+
   
-  constructor(private firestore : Firestore, private sesion : SesionService) {
+  constructor(private firestore : Firestore) {
     this.obtenerDatos();
+
    }
 
   async crearRegistro(usuario : Usuario): Promise<string> {
@@ -41,27 +43,41 @@ export class DataUsuariosService {
 
   obtenerDatos(){
     let col = collection(this.firestore, 'usuarios');
-    const observable = collectionData(col, { idField: 'id' });
+    const observable = collectionData(col, {idField: 'id'});
     observable.subscribe((respuesta:any) => {
       this.coleccionUsuarios = respuesta;
-
-      // console.log(respuesta);
+      this.coleccionEspecialistas = this.coleccionUsuarios.filter((usuario)=>{return usuario.tipo == TipoUsuario.especialista});
+      this.coleccionPacientes = this.coleccionUsuarios.filter((usuario)=>{return usuario.tipo == TipoUsuario.paciente});
     })
 
   }
   
-  async obtenerTipoUsuarioPorEmail(email: string): Promise<TipoUsuario | null> {
+  async obtenerUsuarioPorEmail(email: string): Promise<Usuario | null> {
     const col = collection(this.firestore, 'usuarios');
     const obtenerQuery = query(col, where('mail', '==', email));
-    
     
     const querySnapshot = await getDocs(obtenerQuery);
   
     if (!querySnapshot.empty) {
       const usuario = querySnapshot.docs[0].data() as Usuario;
-      return usuario.tipo; 
+      return usuario; 
     }
   
     return null; 
   }
+
+  private modificarRegistro(usuario : Usuario, data: any) {
+    console.log(usuario);
+    let col = collection(this.firestore, 'usuarios');
+    const docRef = doc(col, usuario.id);
+    
+    updateDoc(docRef, data);
+  }
+
+  cambiarHabilitacionEspecialista(usuario : Usuario, habilitado: boolean ){
+    this.modificarRegistro(usuario, {habilitado : habilitado});
+  }
+
+
+  
 }

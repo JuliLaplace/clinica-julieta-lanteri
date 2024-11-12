@@ -57,7 +57,7 @@ h4{
 }
 
 .error-message {
-    margin-bottom: 15px;
+    /* margin-bottom: 15px; */
     color: rgb(255, 0, 0);
     height: 10px; 
     visibility: hidden; 
@@ -98,4 +98,12 @@ h4{
     to {
         transform: rotate(360deg);
     }
+}
+
+/*CAPTCHA*/
+.captcha{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
 }

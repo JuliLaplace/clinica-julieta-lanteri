@@ -1,0 +1,9 @@
+<div class="contenedor">
+
+    <div class="seccion"> 
+        <app-card-perfil [usuario]="usuario"></app-card-perfil>
+    </div>
+    <div class="seccion-especialista">
+        <app-horarios-especialista class="seccion" *ngIf="sesion.esEspecialista()"></app-horarios-especialista>
+    </div>
+</div>

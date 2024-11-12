@@ -1,0 +1,57 @@
+<mat-tab-group>
+    <mat-tab label="Solicitud de turno">
+        <div class="contenedor">
+
+            <div *ngIf="sesion.esAdmin()" class="seccion">
+                <h2>Elegí un Paciente</h2>
+                <div class="imagen-container">
+                    <div *ngFor="let paciente of dataUsuarios.coleccionPacientes">
+                        <button (click)="seleccionarPaciente(paciente)" [title]="paciente.nombre + ' ' + paciente.apellido" class="btn-imagen">
+                            <img [src]="paciente.imagenPerfil1" 
+                                [alt]="paciente.nombre" 
+                                class="imagen-perfil" />
+                        </button>
+                    </div>
+                </div>
+                
+                <p *ngIf="!pacienteSeleccionado" class="error">Por favor, elige un paciente.</p>
+            </div>
+        
+            
+            <div class="seccion">
+                <h2>Elegí una especialidad</h2>
+                <div class="imagen-container">
+                    <div *ngFor="let especialidad of especialidades.coleccionEspecialidades" class="btn-especialidad">
+                        <button (click)="seleccionarEspecialidad(especialidad)"class="btn" >
+                            {{ especialidad.especialidad }}
+                        </button>
+                    </div>
+                </div>
+                
+                <p *ngIf="!especialidadSeleccionada" class="error">Por favor, elige una especialidad.</p>
+            </div>
+        
+            
+            <div class="seccion" *ngIf="pacienteSeleccionado && especialidadSeleccionada">
+                <h2>Elegí un especialista</h2>
+                <div class="imagen-container">
+                    <div *ngFor="let especialista of especialistasFiltrados">
+                        <button (click)="seleccionarEspecialista(especialista)" [title]="especialista.nombre + ' ' + especialista.apellido" class="btn-imagen">
+                            <img [src]="especialista.imagenPerfil1" 
+                                [alt]="especialista.nombre" 
+                                class="imagen-perfil" />
+                        </button>
+                    </div>
+                </div>
+                
+                <p *ngIf="!especialistaSeleccionado" class="error">Por favor, elige un especialista.</p>
+            </div>
+        
+        
+            <div *ngIf="pacienteSeleccionado && especialidadSeleccionada && especialistaSeleccionado">
+                <h2>Elegí una fecha</h2>
+            </div>
+        </div>
+    </mat-tab>
+  </mat-tab-group>
+

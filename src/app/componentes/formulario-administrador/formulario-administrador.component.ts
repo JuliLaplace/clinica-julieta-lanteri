@@ -8,11 +8,13 @@ import { TipoUsuario } from '../../enumerables/tipo-usuario';
 import Swal from 'sweetalert2'
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { RecaptchaModule } from "ng-recaptcha";
+import { StorageService } from '../../servicios/storage.service';
 
 @Component({
   selector: 'app-formulario-administrador',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterLink],
+  imports: [ReactiveFormsModule, CommonModule, RecaptchaModule],
   templateUrl: './formulario-administrador.component.html',
   styleUrl: './formulario-administrador.component.css'
 })
@@ -20,10 +22,12 @@ export class FormularioAdministradorComponent {
 
   altaPersona!: FormGroup;
   botonSeleccionado: string = '';
-  base64: any;
+  captchaResponse : string | null=null;
+  foto1! : File;
+
   @Output() loadingChange = new EventEmitter<boolean>();
 
-  constructor(public servicioForm: FormViewerService, private dataUsuarios: DataUsuariosService, private servicioLoader: LoaderService, private servicioLogin: LoginService) {
+  constructor(public servicioForm: FormViewerService, private dataUsuarios: DataUsuariosService, private servicioLoader: LoaderService, private servicioLogin: LoginService, private servicioStorage: StorageService) {
 
   }
 
@@ -31,39 +35,26 @@ export class FormularioAdministradorComponent {
     this.altaPersona = new FormGroup({
       apellido: new FormControl('', [Validators.required, Validators.pattern(this.servicioForm.nombresRegex), Validators.minLength(3)]),
       nombre: new FormControl('', [Validators.required, Validators.pattern(this.servicioForm.nombresRegex), Validators.minLength(3)]),
-      dni: new FormControl([Validators.pattern(this.servicioForm.numeroRegex), Validators.required, Validators.min(0)]),
-      edad: new FormControl([Validators.pattern(this.servicioForm.numeroRegex), Validators.required, Validators.min(0), Validators.max(2)]),
+      dni : new FormControl('',[Validators.pattern(this.servicioForm.numeroRegex), Validators.required, Validators.min(11111)]),
+      edad : new FormControl('',[Validators.pattern(this.servicioForm.numeroRegex), Validators.required,Validators.min(22), Validators.max(70)]),
       email: new FormControl('', [Validators.required, Validators.email, Validators.pattern(this.servicioForm.emailRegex)]),
       pwd: new FormControl('', [Validators.required, Validators.minLength(6)]),
-      foto1: new FormControl(""),
+
     })
   }
   cargarPersona() {
 
-    if (this.altaPersona.valid) {
       const email = this.altaPersona.get('email')?.value;
       const pwd = this.altaPersona.get('pwd')?.value;
       this.loadingChange.emit(true);
       
 
       this.servicioLogin.registrar(email, pwd)
-        .then(() => {
-
-          const usuario: Usuario = {
-            nombre: this.altaPersona.get('nombre')?.value,
-            apellido: this.altaPersona.get('apellido')?.value,
-            edad: this.altaPersona.get('edad')?.value,
-            dni: this.altaPersona.get('dni')?.value,
-            mail: email,
-            contrasena: pwd,
-            tipo: TipoUsuario.paciente,
-            obraSocial: this.altaPersona.value.obraSocial,
-            imagenPerfil1: "../../../assets/clinica5.jpg",
-            imagenPerfil2: "../../../assets/clinica5.jpg",
-          };
-          // this.loadingChange.emit(false);
-          return this.dataUsuarios.crearRegistro(usuario);
-        })
+      .then((res) => {
+        if(!res.errorFlag){
+          this.cargarUsuarioBD();
+        }
+      })
 
         .then((id) => {
           console.log('Usuario creado con ID:', id);
@@ -95,10 +86,60 @@ export class FormularioAdministradorComponent {
           this.loadingChange.emit(false);
 
         });
-    } else {
-      console.error('Formulario inválido');
-    }
 
+  }
+
+  async cargarUsuarioBD(){
+    if(this.altaPersona.valid){
+      const usuario: Usuario = {
+        nombre: this.altaPersona.get('nombre')?.value,
+        apellido: this.altaPersona.get('apellido')?.value,
+        edad: this.altaPersona.get('edad')?.value,
+        dni: this.altaPersona.get('dni')?.value,
+        mail: this.altaPersona.get('email')?.value,
+        tipo: TipoUsuario.administrador,
+        obraSocial: null,
+        imagenPerfil1: await this.subirFoto(this.foto1, "1"),
+        imagenPerfil2: null,
+        habilitado : null,
+        especialidad: null,
+      }
+      this.dataUsuarios.crearRegistro(usuario)
+      .then((id)=>{
+        usuario.id =  id;
+        this.limpiarDatos()
+      });
+    }
+  }
+  limpiarDatos() {
+    // this.errorFlag=false;
+    this.altaPersona.reset();
+  }
+  subirFotoClick() {
+    const fileInput = document.querySelector('input[type="file"]') as HTMLElement;
+    fileInput.click();
+  }
+  onFileSelected(event: Event, foto: string) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.foto1 = input.files[0];
+    }
+  }
+
+  async  subirFoto(foto: File, numero: string)  {
+    let respuesta = '';
+    let email = this.altaPersona.get('email')?.value;
+    if (foto) {
+      return await this.servicioStorage.upload(`${email}-${numero}`, foto);
+    } 
+    return respuesta;
+  }
+  seleccionarUsuario(usuario: string) {
+    this.altaPersona.reset();
+    this.botonSeleccionado = usuario;
+  }
+  resolved(captchaResponse: string | null) {
+    this.captchaResponse = captchaResponse;
 
   }
 }

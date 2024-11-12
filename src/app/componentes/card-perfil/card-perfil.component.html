@@ -1,0 +1,20 @@
+<div class="card" >
+    <img [src]= "usuario.imagenPerfil1" class="card-img-top" alt="imagen usuario">
+    <div class="card-body">
+      <h5 class="card-title">{{usuario.nombre}} {{usuario.apellido}}</h5>
+      <div class="icono-datos">
+          <fa-icon [icon]="iconoPerfil" style="color: #704cb6;" size="xl"></fa-icon>
+          <p class="card-text">DNI: {{usuario.dni}}</p>
+      </div>
+      <div class="icono-datos">
+          <fa-icon [icon]="iconoEdad" style="color: #704cb6;" size="xl"></fa-icon>
+          <p class="card-text">Edad: {{usuario.edad}}</p>
+      </div>
+      <div class="icono-datos">
+          <fa-icon [icon]="iconoDni" style="color: #704cb6;" size="xl"></fa-icon>
+          <p class="card-text">Email: {{usuario.mail}}</p>
+      </div>
+      
+      
+    </div>
+</div>

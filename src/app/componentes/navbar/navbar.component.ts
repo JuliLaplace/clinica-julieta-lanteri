@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { FontAwesomeModule, IconDefinition } from '@fortawesome/angular-fontawesome';
 import { faClock, faLocationDot, faPhoneVolume } from '@fortawesome/free-solid-svg-icons';
 import {faWhatsappSquare} from '@fortawesome/free-brands-svg-icons';
@@ -11,7 +10,7 @@ import { LoginService } from '../../servicios/login.service';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterLink, MatButtonToggleModule, FontAwesomeModule, CommonModule],
+  imports: [RouterLink, CommonModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })

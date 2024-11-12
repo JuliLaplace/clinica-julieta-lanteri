@@ -8,7 +8,7 @@ import { FormularioPacienteComponent } from '../formulario-paciente/formulario-p
 @Component({
   selector: 'app-registro',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormularioEspecialistaComponent, FormularioPacienteComponent],
+  imports: [CommonModule, FormularioEspecialistaComponent, FormularioPacienteComponent],
   templateUrl: './registro.component.html',
   styleUrl: './registro.component.css'
 })

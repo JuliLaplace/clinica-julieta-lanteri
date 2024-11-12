@@ -5,15 +5,35 @@
     </div>
   </div>
 
-  <div class="botonera">
-    <button (click)="seleccionarUsuario('paciente')">Paciente</button>
-    <button (click)="seleccionarUsuario('especialista')">Especialista</button>
+  <div *ngIf="botonSeleccionado==''">
+    <h2>Seleccione a quién desea registrar</h2>
+  </div>
+
+  <div class="botonera" *ngIf="botonSeleccionado==''" >
+    <button class="seleccion-paciente" (click)="seleccionarUsuario('paciente')">
+      <img src="../../../assets/imagenes/paciente.jpg" alt="">
+      <div class="texto-boton">
+        <p>Paciente</p>
+      </div>
+      
+    </button>
+    <button class="seleccion-paciente" (click)="seleccionarUsuario('especialista')">
+      <img src="../../../assets/imagenes/12dc3755e54ea05da21807441682b463.jpg" alt="">
+      <div class="texto-boton">
+        <p>Especialista</p>
+      </div>
+      
+    </button>
   </div>
 
   <div *ngIf="botonSeleccionado=='paciente'" class="contenedor-form">
+    <div>
+      <button class="btn-volver" (click)="seleccionarUsuario('')">Volver</button>
+    </div>
     <app-formulario-paciente (loadingChange)="onLoadingChange($event)"></app-formulario-paciente>
   </div>
   <div *ngIf="botonSeleccionado=='especialista'" class="contenedor-form">
+    <button class="btn-volver" (click)="seleccionarUsuario('')">Volver</button>
     <app-formulario-especialista></app-formulario-especialista>
   </div>
 

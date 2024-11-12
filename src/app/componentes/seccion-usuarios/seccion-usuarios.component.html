@@ -1,1 +1,21 @@
+<div class="contenedor">
 
+    <div class="btn-formulario">
+        <button class="btn" (click)="mostrarFormularios()">{{ agregarUsuario ? 'Volver' : 'Agregar Usuario' }}</button>
+    </div>
+
+    <app-tabla-usuarios *ngIf="!agregarUsuario" class="tabla"></app-tabla-usuarios>
+    <mat-tab-group *ngIf="agregarUsuario" >
+        <h2>Alta Usuarios</h2>
+        
+        <mat-tab label="Alta Paciente" >
+            <app-formulario-paciente class="tabla"></app-formulario-paciente>
+        </mat-tab>
+        <mat-tab label="Alta Especialista" >
+            <app-formulario-especialista class="tabla"></app-formulario-especialista>
+        </mat-tab>
+        <mat-tab label="Alta Administrador">
+            <app-formulario-administrador  class="tabla"></app-formulario-administrador>
+        </mat-tab>
+    </mat-tab-group>
+</div>
