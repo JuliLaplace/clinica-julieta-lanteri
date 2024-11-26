@@ -1,1 +1,47 @@
-<p>pagina-turnos works!</p>
+<div class="contenedor">
+    <h1>Lista de turnos</h1>
+    <div class="turnos-container">
+        
+        <div class="filtros">
+            <div class="filtros">
+                <input type="text" id="buscar" placeholder="Buscar por especialidad o especialista" [(ngModel)]="buscador" >
+              </div>
+        </div>
+      
+
+        <div class="turnos-list">
+          <div class="cards-container">
+            <div class="card" *ngFor="let turno of obtenerTurnosFiltrados()">
+              <div class="card-header">
+                <h3>{{ turno.especialistaNombre }}</h3>
+                <p>{{ turno.especialidad }}</p>
+              </div>
+              <div class="card-body">
+                <p><strong>Paciente:</strong> {{ turno.usuarioNombre }}</p>
+                <p><strong>Fecha:</strong> {{ turno.fechaTurno }}</p>
+                <p><strong>Hora:</strong> {{ turno.horaTurno | formatoHora}}</p>
+                <p><strong>Estado:</strong> {{ turno.estado }}</p>
+              </div>
+              <div class="card-footer">
+                <button *ngIf="(turno.estado !== 'Aceptado' && turno.estado !== 'Finalizado' && turno.estado !== 'Rechazado' && turno.estado !== 'Cancelado')" 
+                        (click)="mostrarComentario(turno)">
+                  Cancelar Turno
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+        
+        <div *ngIf="comentarioVisible" class="comentario-modal">
+          <div class="modal-content">
+            <h3>Cancelar Turno</h3>
+            <textarea [(ngModel)]="comentario" placeholder="Motivo de la cancelación"></textarea>
+            <div class="modal-buttons">
+              <button (click)="cancelarTurno()">Confirmar Cancelación</button>
+              <button (click)="cerrar()">Cerrar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>

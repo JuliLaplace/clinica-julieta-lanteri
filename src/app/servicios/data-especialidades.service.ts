@@ -3,6 +3,7 @@ import { addDoc, collection, collectionData, Firestore } from '@angular/fire/fir
 
 export interface Especialidad{
   especialidad : string,
+  foto : string,
 }
 
 @Injectable({
@@ -11,6 +12,7 @@ export interface Especialidad{
 export class DataEspecialidadesService {
   
   public coleccionEspecialidades:Especialidad[] = [];
+  private url : string = "https://ilhsggimglmzbnkuzgis.supabase.co/storage/v1/object/public/clinica/general.png";
 
   constructor(private firestore: Firestore) { 
     this.obtenerEspecialidades();
@@ -18,7 +20,7 @@ export class DataEspecialidadesService {
   
   crearRegistro(especialidad : Especialidad) {
     let col = collection(this.firestore, 'especialidades');
-    addDoc(col, {especialidad : especialidad})
+    addDoc(col, {especialidad : especialidad, foto : this.url})
   }
 
   obtenerEspecialidades(){

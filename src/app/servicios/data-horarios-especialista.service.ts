@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, Firestore } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, deleteDoc, Firestore, getDocs, limit, query, where } from '@angular/fire/firestore';
 
-export interface HorarioDia {
-  id?: string;  
-  dia: string;          
-  desde: string;       
-  hasta: string;    
+export interface HorarioSemanal {         
+  horariosDiarios: HorarioDiario[];   
   mail: string,
-  especialidad: string[],    
+}
+
+
+export interface HorarioDiario{
+  dia: string;
+  horarios : string[];
+  especialidad: string,    
 }
 
 @Injectable({
@@ -15,16 +18,14 @@ export interface HorarioDia {
 })
 export class DataHorariosEspecialistaService {
 
-  public coleccionHorarios:HorarioDia[] = [];
+  public coleccionHorarios:HorarioSemanal[] = [];
 
   constructor(private firestore: Firestore) {
+    this.obtenerHorariosEspecialista();
     
-   }
-
-   crearRegistro(horarios : HorarioDia) {
-    let col = collection(this.firestore, 'horarios-especialistas');
-    addDoc(col, {horarios : horarios})
   }
+
+ 
 
   obtenerHorariosEspecialista(){
     let col = collection(this.firestore, 'horarios-especialistas');
@@ -34,4 +35,25 @@ export class DataHorariosEspecialistaService {
     })
 
   }
+
+  async crearRegistro(horarios: HorarioSemanal, mail: string): Promise<void> {
+    let col = collection(this.firestore, 'horarios-especialistas');
+    await this.deleteOne(mail);
+    addDoc(col, horarios)
+  }
+
+  private async deleteOne(mail: string){
+    let col = collection(this.firestore, 'horarios-especialistas');
+    const fetchQuery = query(
+      col, 
+      where("mail", "==", mail),
+      limit(1),
+    );
+    const querySnapshot = await getDocs(fetchQuery);
+    querySnapshot.forEach((doc) => {
+      deleteDoc(doc.ref);
+    });
+  }
+
+
 }

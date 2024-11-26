@@ -3,6 +3,7 @@ import { Usuario } from '../../servicios/data-usuarios.service';
 import { faAddressCard,  faIdBadge, faPerson, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommonModule } from '@angular/common';
+import { SesionService } from '../../servicios/sesion.service';
 
 @Component({
   selector: 'app-card-perfil',
@@ -13,10 +14,14 @@ import { CommonModule } from '@angular/common';
 })
 export class CardPerfilComponent {
 
-  @Input() usuario!: Usuario;
+
 
   iconoPerfil : IconDefinition = faPerson;
   iconoDni : IconDefinition = faAddressCard;
   iconoEdad : IconDefinition = faIdBadge
+
+  constructor( public sesion: SesionService){
+
+  }
   
 }

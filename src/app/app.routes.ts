@@ -12,6 +12,7 @@ import { pacienteGuard } from './guards/paciente.guard';
 import { adminPacienteGuard } from './guards/admin-paciente.guard';
 import { especialistaGuard } from './guards/especialista.guard';
 import { especialistaPacienteGuard } from './guards/especialista-paciente.guard';
+import { SeccionPacientesComponent } from './componentes/seccion-pacientes/seccion-pacientes.component';
 
 export const routes: Routes = [
     {
@@ -58,5 +59,10 @@ export const routes: Routes = [
         path: 'mi-perfil',
         component: PaginaMiPerfilComponent,
     
+      },
+      {
+        path: 'seccion-pacientes',
+        component: SeccionPacientesComponent,
+        canActivate: [especialistaGuard],
       },
 ];

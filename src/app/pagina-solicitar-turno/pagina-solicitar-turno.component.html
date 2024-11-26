@@ -1,8 +1,7 @@
-<mat-tab-group>
-    <mat-tab label="Solicitud de turno">
+
         <div class="contenedor">
 
-            <div *ngIf="sesion.esAdmin()" class="seccion">
+            <div *ngIf="sesion.esAdmin() && !pacienteSeleccionado" class="seccion">
                 <h2>Elegí un Paciente</h2>
                 <div class="imagen-container">
                     <div *ngFor="let paciente of dataUsuarios.coleccionPacientes">
@@ -13,30 +12,30 @@
                         </button>
                     </div>
                 </div>
-                
-                <p *ngIf="!pacienteSeleccionado" class="error">Por favor, elige un paciente.</p>
             </div>
         
             
-            <div class="seccion">
+            <div class="seccion" *ngIf="!especialidadSeleccionada && pacienteSeleccionado">
                 <h2>Elegí una especialidad</h2>
+                <button class="btn btn-volver" (click)="volverAPaciente()" *ngIf="sesion.esAdmin()">Volver</button>
                 <div class="imagen-container">
                     <div *ngFor="let especialidad of especialidades.coleccionEspecialidades" class="btn-especialidad">
-                        <button (click)="seleccionarEspecialidad(especialidad)"class="btn" >
-                            {{ especialidad.especialidad }}
+                        <button (click)="seleccionarEspecialidad(especialidad)" class="btn btnEspecialidad" >
+                            <img [src]="especialidad.foto" alt="" class="btn-imagen">
+                            <p> {{ especialidad.especialidad }}</p>
                         </button>
                     </div>
                 </div>
-                
-                <p *ngIf="!especialidadSeleccionada" class="error">Por favor, elige una especialidad.</p>
             </div>
         
             
-            <div class="seccion" *ngIf="pacienteSeleccionado && especialidadSeleccionada">
+            <div class="seccion" *ngIf="pacienteSeleccionado && especialidadSeleccionada && !especialistaSeleccionado">
                 <h2>Elegí un especialista</h2>
+                <button class="btn btn-volver" (click)="volverAEspecialidad()">Volver</button>
                 <div class="imagen-container">
                     <div *ngFor="let especialista of especialistasFiltrados">
-                        <button (click)="seleccionarEspecialista(especialista)" [title]="especialista.nombre + ' ' + especialista.apellido" class="btn-imagen">
+                        <button (click)="seleccionarEspecialista(especialista)" [title]="especialista.nombre + ' ' + especialista.apellido" class="btn btnEspecialidad">
+                            <p> {{ especialista.nombre }} {{especialista.apellido}}</p>
                             <img [src]="especialista.imagenPerfil1" 
                                 [alt]="especialista.nombre" 
                                 class="imagen-perfil" />
@@ -44,14 +43,57 @@
                     </div>
                 </div>
                 
-                <p *ngIf="!especialistaSeleccionado" class="error">Por favor, elige un especialista.</p>
+                <p *ngIf="!especialistasFiltrados.length" class="error">
+                    No hay especialistas disponibles para la especialidad seleccionada.
+                  </p>
+                  
             </div>
         
         
-            <div *ngIf="pacienteSeleccionado && especialidadSeleccionada && especialistaSeleccionado">
+            <div *ngIf="especialistaSeleccionado && !fechaSeleccionada">
                 <h2>Elegí una fecha</h2>
+                <button class="btn " (click)="volverAEspecialista()">Volver</button>
+                <div class="seccion botonera-fechas" *ngIf="obtenerFechasDisponibles().length">
+                  <div *ngFor="let fecha of obtenerFechasDisponibles()">
+                    <button (click)="seleccionarFecha(fecha)" class="btn">
+                      <p>{{ fecha | date:'EEEE d \'de\' MMMM ' }}</p>
+                    </button>
+                  </div>
+                </div>
+
+                <p *ngIf="!obtenerFechasDisponibles().length" class="error">
+                  No hay fechas disponibles para el especialista seleccionado.
+                </p>
             </div>
+
+            <div *ngIf="fechaSeleccionada && !horarioSeleccionado">
+                <h2>Elegí un horario</h2>
+                <button class="btn " (click)="volverAFecha()">Volver</button>
+                <div class="seccion botonera-fechas"  *ngIf="obtenerHorariosDisponibles().length">
+                  <div *ngFor="let horario of obtenerHorariosDisponibles()">
+                    <button (click)="seleccionarHorario(horario)" class="btn">
+                      <p>{{ horario | formatoHora }}</p>
+                    </button>
+                  </div>
+                </div>
+                <p *ngIf="!obtenerHorariosDisponibles().length" class="error">
+                  No hay horarios disponibles para la fecha seleccionada.
+                </p>
+            </div>
+
+            <div *ngIf="pacienteSeleccionado && especialidadSeleccionada && especialistaSeleccionado && fechaSeleccionada && horarioSeleccionado" class="card">
+                <h2>Turno seleccionado</h2>
+                <div class="card-detalle">
+                  <p><strong>Paciente:</strong> {{ pacienteSeleccionado.nombre }} {{ pacienteSeleccionado.apellido }}</p>
+                  <p><strong>Especialidad:</strong> {{ especialidadSeleccionada }}</p>
+                  <p><strong>Especialista:</strong> {{ especialistaSeleccionado.nombre }} {{ especialistaSeleccionado.apellido }}</p>
+                  <p><strong>Fecha:</strong> {{ fechaSeleccionada | date:'EEEE d \'de\' MMMM ' }}</p>
+                  <p><strong>Horario:</strong> {{ horarioSeleccionado | formatoHora }}</p>
+                </div>
+                <button class="btn btn-confirmar" (click)="confirmarTurno()">Confirmar Turno</button>
+                <button class="btn btn-confirmar" (click)="cancelarTurno()">Volver</button>
+              </div>
+
         </div>
-    </mat-tab>
-  </mat-tab-group>
+
 

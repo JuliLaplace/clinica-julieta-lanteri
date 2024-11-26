@@ -43,8 +43,11 @@ input[readonly] {
 }
 
 h1{
+    margin: 20px;
+    color: #704cb6;
+    font-weight: 900;
     text-align: center;
-}
+  }
 .btn {
     color: #fff;
     font-size: 16px;
@@ -62,4 +65,8 @@ h1{
     align-items: center;
     margin-top: 10px;
 
+}
+
+.oculto{
+    display: none;
 }

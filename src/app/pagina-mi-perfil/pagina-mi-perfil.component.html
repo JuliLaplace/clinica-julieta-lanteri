@@ -1,7 +1,8 @@
 <div class="contenedor">
 
     <div class="seccion"> 
-        <app-card-perfil [usuario]="usuario"></app-card-perfil>
+        <app-card-perfil></app-card-perfil>
+        <button class="btn" *ngIf="sesion.esPaciente()" (click)="descargarPDF()">Descargar PDF</button>
     </div>
     <div class="seccion-especialista">
         <app-horarios-especialista class="seccion" *ngIf="sesion.esEspecialista()"></app-horarios-especialista>

@@ -5,12 +5,12 @@ import { LoginService } from '../../servicios/login.service';
 import { CommonModule } from '@angular/common';
 import { LoaderService } from '../../servicios/loader.service';
 import {MatIconModule} from '@angular/material/icon';
-
+import { HoverEmailDirective } from '../../directivas/hover-email.directive';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RouterLink, FormsModule, CommonModule, MatIconModule],
+  imports: [RouterLink, FormsModule, CommonModule, MatIconModule, HoverEmailDirective],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })

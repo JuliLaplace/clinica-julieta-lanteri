@@ -25,6 +25,7 @@ export class DataUsuariosService {
   public coleccionUsuarios:Usuario[] = [];
   public coleccionPacientes:Usuario[] = [];
   public coleccionEspecialistas:Usuario[] = [];
+  public coleccionAdmin : Usuario[] = [];
 
   
   constructor(private firestore : Firestore) {
@@ -48,7 +49,8 @@ export class DataUsuariosService {
       this.coleccionUsuarios = respuesta;
       this.coleccionEspecialistas = this.coleccionUsuarios.filter((usuario)=>{return usuario.tipo == TipoUsuario.especialista});
       this.coleccionPacientes = this.coleccionUsuarios.filter((usuario)=>{return usuario.tipo == TipoUsuario.paciente});
-    })
+      this.coleccionAdmin = this.coleccionUsuarios.filter((usuario)=>{return usuario.tipo == TipoUsuario.administrador});
+    });
 
   }
   

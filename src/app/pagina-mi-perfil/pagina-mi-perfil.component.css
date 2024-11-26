@@ -14,3 +14,20 @@
     align-items: center; 
     
 }
+
+button {
+    color: #fff;
+    font-size: 16px;
+    padding: 12px 30px;
+    border-radius: 20px;
+    background-color: #913b9ca6;
+    display: flex;
+    justify-self: center;
+    border: none;
+    margin: 5px;
+}
+
+.btn:hover {
+    background-color: rebeccapurple;
+    color: aliceblue;
+  }

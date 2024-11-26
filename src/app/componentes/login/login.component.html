@@ -30,50 +30,39 @@
                 <p class="error-login" [class.show]="flagError">{{errorMsj}}</p>
             </div>
 
-            <div class="btn-acceso">
+            
+        </div>
+        <div class="btn-acceso">
                
-                    <button class="btn-fab btn" mat-mini-fab color="accent" (click)="registroAutomatico('chandler')" *ngIf="abrirMenu">
-                      <img src="https://ilhsggimglmzbnkuzgis.supabase.co/storage/v1/object/public/clinica/chandler@yopmail.com-1" alt="">
-                    </button>
+            <button class="btn-fab btn" mat-mini-fab color="accent" (click)="registroAutomatico('chandler')" *ngIf="abrirMenu" [appHoverEmail]="'chandler@yopmail.com'">
+              <img src="https://ilhsggimglmzbnkuzgis.supabase.co/storage/v1/object/public/clinica/chandler@yopmail.com-1" alt="">
+            </button>
 
-                    <button class="btn-fab btn" mat-mini-fab color="accent" (click)="registroAutomatico('bojack')" *ngIf="abrirMenu">
-                      <img src="https://ilhsggimglmzbnkuzgis.supabase.co/storage/v1/object/public/clinica/bojack@yopmail.com-1" alt="">
-                    </button>
+            <button class="btn-fab btn" mat-mini-fab color="accent" (click)="registroAutomatico('bojack')" *ngIf="abrirMenu" [appHoverEmail]="'chandler@yopmail.com'">
+              <img src="https://ilhsggimglmzbnkuzgis.supabase.co/storage/v1/object/public/clinica/bojack@yopmail.com-1" alt="">
+            </button>
 
-                    <button class="btn-fab btn" mat-mini-fab color="accent" (click)="registroAutomatico('morty')" *ngIf="abrirMenu">
-                      <img src="https://ilhsggimglmzbnkuzgis.supabase.co/storage/v1/object/public/clinica/morty@yopmail.com-1" alt="">
-                    </button>
+            <button class="btn-fab btn" mat-mini-fab color="accent" (click)="registroAutomatico('morty')" *ngIf="abrirMenu" [appHoverEmail]="'morty@yopmail.com'">
+              <img src="https://ilhsggimglmzbnkuzgis.supabase.co/storage/v1/object/public/clinica/morty@yopmail.com-1" alt="">
+            </button>
 
-                    <button class="btn-fab btn" mat-mini-fab color="accent" (click)="registroAutomatico('strange')" *ngIf="abrirMenu">
-                        <img src="https://ilhsggimglmzbnkuzgis.supabase.co/storage/v1/object/public/clinica/drstrange@yopmail.com-1" alt="">
-                      </button>
+            <button class="btn-fab btn" mat-mini-fab color="accent" (click)="registroAutomatico('strange')" *ngIf="abrirMenu" [appHoverEmail]="'drstrange@yopmail.com'">
+                <img src="https://ilhsggimglmzbnkuzgis.supabase.co/storage/v1/object/public/clinica/drstrange@yopmail.com-1" alt="">
+              </button>
 
-                      <button class="btn-fab btn" mat-mini-fab color="accent" (click)="registroAutomatico('rick')" *ngIf="abrirMenu">
-                        <img src="https://ilhsggimglmzbnkuzgis.supabase.co/storage/v1/object/public/clinica/rick@yopmail.com-1" alt="">
-                      </button>
+              <button class="btn-fab btn" mat-mini-fab color="accent" (click)="registroAutomatico('rick')" *ngIf="abrirMenu" [appHoverEmail]="'rick@yopmail.com'">
+                <img src="https://ilhsggimglmzbnkuzgis.supabase.co/storage/v1/object/public/clinica/rick@yopmail.com-1" alt="">
+              </button>
 
-                      <button class="btn-fab btn" mat-mini-fab color="accent" (click)="registroAutomatico('juli')" *ngIf="abrirMenu">
-                        <img src="https://ilhsggimglmzbnkuzgis.supabase.co/storage/v1/object/public/clinica/juli.laplace@gmail.com-1" alt="">
-                        
-                      </button>
-                      <button class="btn-fab btn" mat-mini-fab (click)="seleccionMenu()">
-                        <mat-icon>group</mat-icon>
-                    </button>
+              <button class="btn-fab btn" mat-mini-fab color="accent" (click)="registroAutomatico('juli')" *ngIf="abrirMenu" [appHoverEmail]="'juli.laplace@gmail.com'">
+                <img src="https://ilhsggimglmzbnkuzgis.supabase.co/storage/v1/object/public/clinica/juli.laplace@gmail.com-1" alt="">
+                
+              </button>
+              <button class="btn-fab btn" mat-mini-fab (click)="seleccionMenu()">
+                <mat-icon>group</mat-icon>
+            </button>
 
-                <!-- </div> -->
-            </div>
-
-            <!-- <div class="btn-acceso">
-                <button class="btn" (click)="registroAutomatico('administador')">
-                    Admin
-                </button>
-                <button class="btn" (click)="registroAutomatico('especialista')">
-                    Especialista
-                </button>
-                <button class="btn" (click)="registroAutomatico('paciente')">
-                    Paciente
-                </button>
-            </div> -->
+        <!-- </div> -->
         </div>
 
     </div>

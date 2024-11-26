@@ -44,7 +44,7 @@ export class FormularioEspecialistaComponent implements OnInit{
       especialidad : new FormControl('',[Validators.required]),
       email : new FormControl('', [Validators.required, Validators.email, Validators.pattern(this.servicioForm.emailRegex)]),
       pwd : new FormControl('',[Validators.required, Validators.minLength(6)]),
-      // nuevaEspecialidad: new FormControl('', [Validators.pattern(this.servicioForm.nombresRegex), Validators.minLength(3), Validators.maxLength(20)]),
+      nuevaEspecialidad: new FormControl('', [Validators.pattern(this.servicioForm.nombresRegex), Validators.minLength(3), Validators.maxLength(20)]),
       
     })
   }
@@ -152,6 +152,7 @@ export class FormularioEspecialistaComponent implements OnInit{
   }
   agregarEspecialidad() {
     const nuevaEspecialidad = this.altaPersona.get('nuevaEspecialidad')?.value;
+    console.log(nuevaEspecialidad);
     if (nuevaEspecialidad) {
       this.dataEspecialidades.crearRegistro(nuevaEspecialidad);
       this.altaPersona.get('nuevaEspecialidad')?.reset(); 

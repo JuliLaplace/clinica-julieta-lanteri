@@ -2,9 +2,11 @@
 
     <div class="btn-formulario">
         <button class="btn" (click)="mostrarFormularios()">{{ agregarUsuario ? 'Volver' : 'Agregar Usuario' }}</button>
+        <button class="btn" (click)="descargarExcel()">Descargar información</button>
     </div>
 
     <app-tabla-usuarios *ngIf="!agregarUsuario" class="tabla"></app-tabla-usuarios>
+    
     <mat-tab-group *ngIf="agregarUsuario" >
         <h2>Alta Usuarios</h2>
         

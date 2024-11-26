@@ -1,47 +1,29 @@
 
 <h1>Mis Horarios</h1>
 
-<!-- <button (click)="imprimirHorasFraccionadas(1,10)">fraccion</button> -->
-<!-- <div class="tabla">
-
-  <div *ngFor="let dia of dias; let i = index" class="tabla-horarios">
-      <input type="text" [placeholder]="dia" readonly />
-      <div class="select">
-          <input type="text" placeholder="Desde" readonly />
-          <select  [(ngModel)]="selecciones[i].desde" size="5">
-            <option *ngFor="let horario of horarios" [value]="horario">{{ horario }}</option>
-          </select>
-      </div>
-      <div class="select" >
-          <input type="text" placeholder="Hasta" readonly />
-          <select  [(ngModel)]="selecciones[i].hasta" size="5">
-              <option *ngFor="let horario of horarios" [value]="horario">{{ horario }}</option>
-            </select>
-      </div>
-  </div>
-  <div class="btn-carga">
-    <button (click)="cargarHorariosEspecialista()" class="btn">Cargar horarios</button>
-  </div>
-  
-  
-  <div *ngFor="let horario of horariosEspecialista">
-    <p>{{ horario }}</p>
-  </div>
-</div> -->
 <div class="tabla">
   <div class="fila-horarios">
+
+    
+
     <div *ngFor="let dia of dias; let i = index" class="tabla-horarios">
+
+      <div *ngFor="let especialidad of sesion.usuarioBD?.especialidad">
+        <input type="radio" [name]="'especialidad'+i" [id]="especialidad+i" [(ngModel)]="selecciones[i].especialidad" [value]="especialidad">
+        <label [for]="especialidad+i">{{especialidad}}</label>
+      </div>
+
         <input type="text" [placeholder]="dia" readonly />
         <div class="select">
             <input type="text" placeholder="Desde" readonly />
             <select  [(ngModel)]="selecciones[i].desde" size="5">
-              <option *ngFor="let horario of horarios" [value]="horario">{{ horario }}</option>
+              <option *ngFor="let horario of horarios" [value]="horario" [class.oculto]="esSabado(horario, i)">{{ horario }}</option>
             </select>
         </div>
         <div class="select">
             <input type="text" placeholder="Hasta" readonly />
             <select  [(ngModel)]="selecciones[i].hasta" size="5">
-                <option *ngFor="let horario of horarios" [value]="horario">{{ horario }}</option>
+                <option *ngFor="let horario of horarios" [value]="horario" [class.oculto]="esSabado(horario, i) || !esHorarioValido(horario, selecciones[i].desde) ">{{ horario }}</option>
               </select>
         </div>
     </div>
@@ -50,7 +32,4 @@
     <button (click)="cargarHorariosEspecialista()" class="btn">Cargar horarios</button>
   </div>
 
-  <div *ngFor="let horario of horariosEspecialista">
-    <p>{{ horario }}</p>
-  </div>
 </div>

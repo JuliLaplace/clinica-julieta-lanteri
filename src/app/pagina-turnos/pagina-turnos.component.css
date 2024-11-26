@@ -1,0 +1,122 @@
+.contenedor {
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+  }
+  h1{
+    margin: 20px;
+    color: #704cb6;
+    font-weight: 900;
+  }
+  .turnos-container {
+    padding: 20px;
+    width: 80%;
+  }
+  
+  .filtros {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+  }
+  
+
+  .filtros input {
+    padding: 8px;
+    font-size: 14px;
+    width: 500px;
+    text-align: center;
+    border: 2px solid #704cb6;
+  }
+  
+  .turnos-list {
+    margin-top: 20px;
+  }
+  
+  .cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  .card {
+    border: 3px solid #704cb6;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    background-color: #d8b9cc;
+    
+  }
+  
+  .card-header, .card-body, .card-footer{
+    background-color: #eceaea;
+  }
+  .card-header h3 {
+    font-size: 18px;
+    margin: 0;
+    font-weight: bold;
+    color: black;
+  }
+  
+  .card-header p {
+    font-size: 14px;
+    color: black;
+  }
+  
+  .card-body p {
+    font-size: 14px;
+    margin: 10px 0;
+  }
+  
+  .card-footer {
+    text-align: right;
+  }
+  
+  button {
+    color: #fff;
+    font-size: 16px;
+    padding: 12px 30px;
+    border-radius: 20px;
+    background-color: #913b9ca6;
+    display: flex;
+    justify-self: center;
+    border: none;
+}
+  
+  
+  /* Modal */
+  .comentario-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-content {
+    background-color: white;
+    padding: 20px;
+    width: 400px;
+    border-radius: 8px;
+  }
+  
+  .modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  textarea {
+    width: 100%;
+    height: 100px;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }

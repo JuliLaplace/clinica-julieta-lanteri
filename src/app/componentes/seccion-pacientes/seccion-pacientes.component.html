@@ -1,0 +1,173 @@
+<!-- <div class="contenedor">
+
+  <h1>Mis pacientes</h1>
+  <div *ngIf="dataTurnos.obtenerUsuariosAtendidos().length > 0">
+  
+      <mat-table [dataSource]="usuariosAtendidos" class="mat-elevation-z8">
+  
+          <ng-container matColumnDef="nombre">
+            <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.nombre}} </mat-cell>
+          </ng-container>
+        
+          <ng-container matColumnDef="apellido">
+            <mat-header-cell *matHeaderCellDef> Apellido </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.apellido}} </mat-cell>
+          </ng-container>
+        
+          <ng-container matColumnDef="edad">
+            <mat-header-cell *matHeaderCellDef> Edad </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.edad}} </mat-cell>
+          </ng-container>
+        
+          <ng-container matColumnDef="dni">
+            <mat-header-cell *matHeaderCellDef> DNI </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.dni}} </mat-cell>
+          </ng-container>
+        
+          <ng-container matColumnDef="obraSocial">
+            <mat-header-cell *matHeaderCellDef> Obra Social </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.obraSocial}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="imagenPerfil1" >
+            <mat-header-cell *matHeaderCellDef> Imagen </mat-header-cell>
+            <mat-cell *matCellDef="let element" style="width: 200px;">
+
+              <img [src]="element.imagenPerfil1" alt="Imagen de perfil" width="100">
+            </mat-cell>
+          </ng-container>
+        
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+    </div>
+    
+    <div *ngIf="dataTurnos.obtenerUsuariosAtendidos().length == 0">
+      <p>No se han atendido pacientes aún.</p>
+    </div>
+</div> -->
+
+<!-- <div class="contenedor">
+  <h1>Mis pacientes</h1>
+
+  <div *ngIf="usuariosAtendidos.length > 0">
+    <div *ngFor="let paciente of usuariosAtendidos">
+      <mat-card class="paciente-card">
+        <mat-card-header>
+          <mat-card-title>{{ paciente.nombre }} {{ paciente.apellido }}</mat-card-title>
+          <mat-card-subtitle>{{ paciente.edad }} años</mat-card-subtitle>
+          
+        </mat-card-header>
+        <div>
+          <img [src]="paciente.imagenPerfil1" alt="Imagen de perfil" >
+        </div>
+        <mat-card-content>
+          <p><strong>DNI:</strong> {{ paciente.dni }}</p>
+          <p><strong>Obra Social:</strong> {{ paciente.obraSocial }}</p>
+          
+          <h3>Últimos turnos:</h3>
+          <ul>
+            <li *ngFor="let turno of obtenerUltimosTurnos(paciente)">
+              {{ turno.fechaTurno }} a las {{ turno.horaTurno | formatoHora  }}
+              <button class="btn" (click)="verHistorialClinico(paciente)">Ver Historia Clínica</button>
+            </li>
+          </ul>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <div *ngIf="usuariosAtendidos.length == 0">
+    <p>No se han atendido pacientes aún.</p>
+  </div>
+</div> -->
+<div class="contenedor">
+  <h1>Mis pacientes</h1>
+
+  <div *ngIf="usuariosAtendidos.length > 0" class="paciente-cards-container">
+    <div *ngFor="let paciente of usuariosAtendidos" class="paciente-card-container">
+      <mat-card class="paciente-card">
+        <mat-card-header>
+          <mat-card-title>{{ paciente.nombre }} {{ paciente.apellido }}</mat-card-title>
+          <mat-card-subtitle>{{ paciente.edad }} años</mat-card-subtitle>
+        </mat-card-header>
+        <div>
+          <img [src]="paciente.imagenPerfil1" alt="Imagen de perfil">
+        </div>
+        <mat-card-content>
+          <p><strong>DNI:</strong> {{ paciente.dni }}</p>
+          <p><strong>Obra Social:</strong> {{ paciente.obraSocial }}</p>
+          
+          <h3 *ngIf="obtenerUltimosTurnos(paciente).length>0">Últimos turnos:</h3>
+          <ul>
+            <li *ngFor="let turno of obtenerUltimosTurnos(paciente)">
+              {{ turno.fechaTurno }} a las {{ turno.horaTurno | formatoHora }}
+            </li>
+          </ul>
+          <button class="btn" (click)="verHistorialClinico(paciente)">Ver Historia Clínica</button>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <div *ngIf="usuariosAtendidos.length == 0">
+    <p>No se han atendido pacientes aún.</p>
+  </div>
+
+  <div *ngIf="popUp" class="modal">
+    <div class="modal-content">
+      <h3>Historial Clínico</h3>
+      <div *ngIf="turnosUsuario1 && turnosUsuario1.length > 0">
+        <table mat-table [dataSource]="turnosUsuario1" class="mat-elevation-z8">
+          
+
+          <ng-container matColumnDef="altura">
+            <th mat-header-cell *matHeaderCellDef>Altura</th>
+            <td mat-cell *matCellDef="let element">{{ element.historial?.altura | formatoVacio }} cm</td>
+          </ng-container>
+  
+          
+          <ng-container matColumnDef="peso">
+            <th mat-header-cell *matHeaderCellDef>Peso</th>
+            <td mat-cell *matCellDef="let element">{{ element.historial?.peso | formatoVacio }} kg</td>
+          </ng-container>
+  
+         
+          <ng-container matColumnDef="temperatura">
+            <th mat-header-cell *matHeaderCellDef>Temperatura</th>
+            <td mat-cell *matCellDef="let element">{{ element.historial?.temperatura | formatoVacio }} °C</td>
+          </ng-container>
+  
+          
+          <ng-container matColumnDef="presion">
+            <th mat-header-cell *matHeaderCellDef>Presión</th>
+            <td mat-cell *matCellDef="let element">{{ element.historial?.presion | formatoVacio }} mmHg</td>
+          </ng-container>
+  
+          <!-- Datos Dinámicos -->
+           
+          <ng-container matColumnDef="datoDinamico1">
+            <th mat-header-cell *matHeaderCellDef>Dato Dinámico 1</th>
+            <td mat-cell *matCellDef="let element"> {{element.historial?.datoDinamico1.clave | formatoVacio }} : {{ element.historial?.datoDinamico1?.valor | formatoVacio }}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="datoDinamico2">
+            <th mat-header-cell *matHeaderCellDef>Dato Dinámico 2</th>
+            <td mat-cell *matCellDef="let element">{{ element.historial?.datoDinamico2?.valor  | formatoVacio  }}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="datoDinamico3">
+            <th mat-header-cell *matHeaderCellDef>Dato Dinámico 3</th>
+            <td mat-cell *matCellDef="let element">{{ element.historial?.datoDinamico3?.valor  | formatoVacio }}</td>
+          </ng-container>
+  
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+      <button class="btn" (click)="cerrarPopUp()">Cerrar</button>
+    </div>
+  </div>
+  
+</div>
+

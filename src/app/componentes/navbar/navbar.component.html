@@ -8,7 +8,7 @@
 
             <div *ngIf="this.sesion.sesionActiva()">
 
-                    <p class="usuario">Usuario logueado: {{this.sesion.getUsuario()}}</p>
+                    <p class="usuario">¡Hola {{this.sesion.getUsuario()}}!</p>
 
             </div>
             <div >
@@ -21,6 +21,12 @@
                     </li>
                     <li class="nav-item nav-underline" *ngIf="this.sesion.sesionActiva()">
                         <a class="nav-link" [routerLink]="['/mi-perfil']">Mi Perfil</a>
+                    </li>
+                    <li class="nav-item nav-underline" *ngIf="this.sesion.esEspecialista() || this.sesion.esPaciente()">
+                        <a class="nav-link" [routerLink]="['/mis-turnos']">Mis turnos</a>
+                    </li>
+                    <li class="nav-item nav-underline" *ngIf="this.sesion.esEspecialista()">
+                        <a class="nav-link" [routerLink]="['/seccion-pacientes']">Mis Pacientes</a>
                     </li>
                     <li class="nav-item nav-underline" *ngIf="sesion.esAdmin()">
                         <a class="nav-link" [routerLink]="['/seccion-usuarios']">Usuarios</a>

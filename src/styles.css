@@ -8,3 +8,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     display: flex;
     flex-direction: column;
 }
+h1{
+    margin: 20px;
+    color: #704cb6;
+    font-weight: 900;
+    text-align: center;
+  }
+
+  h4{
+ 
+    color: #704cb6;
+    font-weight: 900;
+
+  }
