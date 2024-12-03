@@ -1,4 +1,4 @@
-.contenedor{
+.contenedor {
   display: flex;
   align-items: center;
   justify-content: start;
@@ -6,7 +6,7 @@
 }
 
 
-  
+
 .filtros {
   display: flex;
   gap: 20px;
@@ -23,104 +23,110 @@
   text-align: center;
   border: 2px solid #704cb6;
 }
-  
-  .tabla-container table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .tabla-container th, .tabla-container td {
-    padding: 10px;
-    border: 1px solid #704cb6;
-    text-align: center;
-  }
-  
-  .tabla-container th {
-    background-color: #704cb6;
-    
-    color: #ddd;
-    text-align: center;
-  }
-  
-  .tabla-container td button {
-    padding: 5px 10px;
-    font-size: 14px;
-    cursor: pointer;
-    border: none;
-    border-radius: 4px;
-  }
-  
 
-  .tabla-container .realizado {
-    color: green;
-    font-weight: bold;
-  }
-  
-  .tabla-container .pendiente {
-    color: orange;
-    font-weight: bold;
-  }
-  
-  .tabla-container .cancelado {
-    color: red;
-    font-weight: bold;
-  }
-  
-  .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 400px;
-    text-align: center;
-  }
-  
-  .modal-buttons{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-  }
-  .modal-buttons button {
-   
-    margin: 5px;
-    padding: 10px 15px;
-  }
+.filtros input:focus {
+  outline: 2px solid #704cb6;
+}
 
-  button {
-    color: #fff;
-    font-size: 16px;
-    padding: 12px 30px;
-    border-radius: 20px;
-    background-color: #913b9ca6;
-    display: flex;
-    justify-self: center;
-    border: none;
-    margin: 5px;
+.tabla-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla-container th,
+.tabla-container td {
+  padding: 10px;
+  border: 1px solid #704cb6;
+  text-align: center;
+}
+
+.tabla-container th {
+  background-color: #704cb6;
+
+  color: #ddd;
+  text-align: center;
+}
+
+.tabla-container td button {
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+}
+
+
+.tabla-container .realizado {
+  color: green;
+  font-weight: bold;
+}
+
+.tabla-container .pendiente {
+  color: orange;
+  font-weight: bold;
+}
+
+.tabla-container .cancelado {
+  color: red;
+  font-weight: bold;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 600px;
+  text-align: center;
+}
+
+.modal-buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-buttons button {
+
+  margin: 5px;
+  padding: 10px 15px;
+}
+
+button {
+  color: #fff;
+  font-size: 16px;
+  padding: 12px 30px;
+  border-radius: 20px;
+  background-color: #913b9ca6;
+  display: flex;
+  justify-self: center;
+  border: none;
+  margin: 5px;
 }
 
 
 /*HISTORIAL*/
-.fijos div,
+/* .fijos div,
 .dinamicos div {
   margin-bottom: 15px;
-}
+} */
 
 input {
   padding: 8px;
-  flex-grow: 1; 
+  flex-grow: 1;
   border-radius: 5px;
   border: 1px solid #ccc;
 }
@@ -139,26 +145,27 @@ input {
 
 .row label {
   margin-right: 10px;
-  width: 150px; 
+  width: 150px;
 }
 
 .row input {
-  flex-grow: 1; 
+  flex-grow: 1;
 }
 
 .dinamicos .row {
   display: flex;
-  gap: 10px;  
-  margin-bottom: 15px; 
-  justify-content: space-between; 
+  gap: 10px;
+  margin-bottom: 15px;
+  justify-content: space-between;
 }
 
 .dinamicos .row input {
   width: 48%;
 }
 
-textarea{
+textarea {
   margin-bottom: 10px;
+  border: 3px solid #704cb6;
 }
 
 /*mensaje error*/
@@ -177,7 +184,7 @@ p {
 .error-message {
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
-  
+
   min-height: 1.5em;
   visibility: hidden;
 }
@@ -185,4 +192,28 @@ p {
 .error-message.visible {
   opacity: 1;
   visibility: visible;
+}
+
+/*boton estrella*/
+
+.stars {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.stars button {
+  font-size: 3rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.stars .filled {
+  color: rgb(132, 14, 179);
+}
+
+.stars .empty {
+  color: gray;
 }

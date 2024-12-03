@@ -13,56 +13,75 @@ import { adminPacienteGuard } from './guards/admin-paciente.guard';
 import { especialistaGuard } from './guards/especialista.guard';
 import { especialistaPacienteGuard } from './guards/especialista-paciente.guard';
 import { SeccionPacientesComponent } from './componentes/seccion-pacientes/seccion-pacientes.component';
+import { PaginaGraficosComponent } from './pagina-graficos/pagina-graficos.component';
+import { LogsComponent } from './componentes/logs/logs.component';
 
 export const routes: Routes = [
     {
         path: '',
         component: HomeComponent,
+        data : {animation: 'homePage'}
 
     },
     {
         path: 'home',
         redirectTo: '', pathMatch: "full",
+        data : {animation: 'homePage'}
 
     },
     {
         path: 'login',
         component: LoginComponent,
+        data : {animation: 'loginPage'}
     
       },
       {
         path: 'registro',
         component: RegistroComponent,
+        data : {animation: 'registro'}
     
       },
       {
         path: 'seccion-usuarios',
         component: SeccionUsuariosComponent, 
-        canActivate: [adminGuard]
+        canActivate: [adminGuard],
+        data : {animation: 'usuarios'}
       },
       {
         path: 'mis-turnos',
         component: PaginaMisTurnosComponent, 
-        canActivate: [especialistaPacienteGuard]
+        canActivate: [especialistaPacienteGuard],
+        data : {animation: 'mis-turnos'}
       },
       {
         path: 'turnos',
         component: PaginaTurnosComponent, 
-        canActivate: [adminGuard]
+        canActivate: [adminGuard],
+        data : {animation: 'turnos'}
       },
       {
         path: 'solicitar-turno',
         component: PaginaSolicitarTurnoComponent, 
         canActivate: [adminPacienteGuard],
+        data : {animation: 'solicitar-turno'}
       },
       {
         path: 'mi-perfil',
         component: PaginaMiPerfilComponent,
+        data : {animation: 'mi-perfil'}
     
       },
       {
         path: 'seccion-pacientes',
         component: SeccionPacientesComponent,
         canActivate: [especialistaGuard],
+        data : {animation: 'seccion-pacientes'}
       },
+      {
+        path: 'graficos',
+        component: PaginaGraficosComponent,
+        canActivate: [adminGuard],
+        data : {animation: 'graficosPage'}
+      },
+    
 ];

@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { Usuario } from '../../servicios/data-usuarios.service';
 import { faAddressCard,  faIdBadge, faPerson, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommonModule } from '@angular/common';

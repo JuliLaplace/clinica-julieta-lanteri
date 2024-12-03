@@ -11,18 +11,19 @@ import { LoginService } from '../../servicios/login.service';
 import { RecaptchaModule } from "ng-recaptcha";
 import { StorageService } from '../../servicios/storage.service';
 import { SesionService } from '../../servicios/sesion.service';
+import { RickaptchaComponent } from '../rickaptcha/rickaptcha.component';
 
 @Component({
   selector: 'app-formulario-paciente',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterLink, RecaptchaModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterLink, RecaptchaModule, RickaptchaComponent],
   templateUrl: './formulario-paciente.component.html',
   styleUrl: './formulario-paciente.component.css'
 })
 export class FormularioPacienteComponent {
   altaPersona!: FormGroup;
   botonSeleccionado: string = '';
-  captchaResponse : string | null=null;
+  captchaResponse : boolean= false;
   foto1! : File;
   foto2! : File;
 
@@ -164,7 +165,7 @@ export class FormularioPacienteComponent {
     this.altaPersona.reset();
     this.botonSeleccionado = usuario;
   }
-  resolved(captchaResponse: string | null) {
+  resolved(captchaResponse: boolean) {
     this.captchaResponse = captchaResponse;
 
   }

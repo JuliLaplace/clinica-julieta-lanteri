@@ -69,23 +69,148 @@
   </div>
   <div class="contenedor">
     <mat-card class="example-card" appearance="outlined" *ngFor="let elemento of usuariosVisibles">
-      <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>{{ elemento.nombre }} {{ elemento.apellido }}</mat-card-title>
+      <mat-card-header class="example-header">
+        <mat-card-title>{{ elemento.nombre | prefijoEspecialista:elemento.tipo }} {{ elemento.apellido }}</mat-card-title>
         <mat-card-subtitle>DNI: {{ elemento.dni }}</mat-card-subtitle>
       </mat-card-header>
-      <img mat-card-image [src]="elemento.imagenPerfil1" alt="Primer imagen">
-      <img *ngIf="elemento.imagenPerfil2"  [src]="elemento.imagenPerfil2" alt="Segunda Imagen">
-      <mat-card-content>
+
+      <div *ngIf="elemento.tipo == tipoUsuario.paciente" class="img">
+        <img  appHoverImagen [imagen2]="elemento.imagenPerfil2" [src]="elemento.imagenPerfil1" alt="Imagen de perfil">
+      </div>
+      <div *ngIf="elemento.tipo != tipoUsuario.paciente" class="img">
+        <img  [src]="elemento.imagenPerfil1" alt="Imagen de perfil">
+      </div>
+
+      <mat-card-content class="contenido">
         <p><strong>Edad:</strong> {{ elemento.edad }}</p>
         <p><strong>Obra Social:</strong> {{ elemento.obraSocial | formatoVacio }}</p>
         <p><strong>Especialidad:</strong> {{ elemento.especialidad?.join(', ') | formatoVacio }}</p>
       </mat-card-content>
-      <mat-card-actions>
+
+      <mat-card-actions class="contenido">
         <button *ngIf="elemento.habilitado" (click)="deshabilitarEspecialista(elemento)"  class="btn">Deshabilitar</button>
         <button *ngIf="elemento.habilitado === false" (click)="habilitarEspecialista(elemento)"  class="btn">Habilitar</button>
         <button *ngIf="elemento.tipo == tipoUsuario.paciente" (click)="descargarExcel(elemento)"  class="btn">Descargar Turnos</button>
+        <button *ngIf="elemento.tipo == tipoUsuario.paciente" (click)="verHistorialClinico(elemento)"  class="btn">Ver historial clínico</button>
       </mat-card-actions>
     </mat-card>
+  </div>
+
+  <div *ngIf="popUp" class="modal">
+    <div class="modal-content">
+      <div *ngIf="!turnosUsuario1 || turnosUsuario1.length == 0">
+        <h3>El paciente aún no cuenta con historial clínico</h3>
+
+      </div>
+      <div *ngIf="turnosUsuario1 && turnosUsuario1.length > 0">
+        <h3 *ngIf="turnosUsuario1">Historial Clínico {{turnosUsuario1[0].usuarioNombre}}</h3>
+        <table mat-table [dataSource]="turnosUsuario1" class="mat-elevation-z8">
+          
+          <ng-container matColumnDef="fecha">
+            <th mat-header-cell *matHeaderCellDef>Fecha</th>
+            <td mat-cell *matCellDef="let element">{{ element.fechaTurno}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="especialista">
+            <th mat-header-cell *matHeaderCellDef>Especialista</th>
+            <td mat-cell *matCellDef="let element">{{ element.especialistaNombre | prefijoEspecialista:tipoUsuario.especialista}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="especialidad">
+            <th mat-header-cell *matHeaderCellDef>Especialidad</th>
+            <td mat-cell *matCellDef="let element">{{ element.especialidad}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="altura">
+            <th mat-header-cell *matHeaderCellDef>Altura</th>
+            <td mat-cell *matCellDef="let element">{{ element.historialClinico.altura | formatoVacio }} cm</td>
+          </ng-container>
+  
+          
+          <ng-container matColumnDef="peso">
+            <th mat-header-cell *matHeaderCellDef>Peso</th>
+            <td mat-cell *matCellDef="let element">{{ element.historialClinico.peso | formatoVacio }} kg</td>
+          </ng-container>
+  
+         
+          <ng-container matColumnDef="temperatura">
+            <th mat-header-cell *matHeaderCellDef>Temperatura</th>
+            <td mat-cell *matCellDef="let element">{{ element.historialClinico.temperatura | formatoVacio }} °C</td>
+          </ng-container>
+  
+          
+          <ng-container matColumnDef="presion">
+            <th mat-header-cell *matHeaderCellDef>Presión</th>
+            <td mat-cell *matCellDef="let element">{{ element.historialClinico.presion | formatoVacio }} mmHg</td>
+          </ng-container>
+  
+          <!-- Datos Dinámicos -->
+           
+          <ng-container matColumnDef="datoDinamico1">
+            <th mat-header-cell *matHeaderCellDef>Dato 1</th>
+            <td mat-cell *matCellDef="let element"> 
+              <!-- {{element.historialClinico.datoDinamico1.clave | formatoVacio }} : {{ element.historialClinico?.datoDinamico1?.valor | formatoVacio }} -->
+              {{ element.historialClinico?.datoDinamico1?.clave 
+                ? (element.historialClinico.datoDinamico1.clave + ' : ' + element.historialClinico.datoDinamico1.valor) 
+                : '--' }}
+            </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="datoDinamico2">
+            <th mat-header-cell *matHeaderCellDef>Dato 2</th>
+            <td mat-cell *matCellDef="let element">
+              <!-- {{ element.historialClinico.datoDinamico2.clave  | formatoVacio  }}  : {{ element.historialClinico.datoDinamico2.valor | formatoVacio }} -->
+              {{ element.historialClinico?.datoDinamico2?.clave 
+                ? (element.historialClinico.datoDinamico2.clave + ' : ' + element.historialClinico.datoDinamico2.valor) 
+                : '--' }}
+            </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="datoDinamico3">
+            <th mat-header-cell *matHeaderCellDef>Dato 3</th>
+            <td mat-cell *matCellDef="let element">
+              <!-- {{ element.historialClinico.datoDinamico3.clave  | formatoVacio }}  : {{ element.historialClinico?.datoDinamico3?.valor | formatoVacio }} -->
+              {{ element.historialClinico?.datoDinamico3?.clave 
+                ? (element.historialClinico.datoDinamico3.clave + ' : ' + element.historialClinico.datoDinamico3.valor) 
+                : '--' }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="datoDinamico4">
+            <th mat-header-cell *matHeaderCellDef>Dato 4</th>
+            <td mat-cell *matCellDef="let element">
+              <!-- {{ element.historialClinico.datoDinamico3.clave  | formatoVacio }}  : {{ element.historialClinico?.datoDinamico3?.valor | formatoVacio }} -->
+              {{ element.historialClinico?.datoDinamico3?.clave 
+                ? (element.historialClinico.datoDinamico3.clave + ' : ' + element.historialClinico.datoDinamico3.valor) 
+                : '--' }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="datoDinamico5">
+            <th mat-header-cell *matHeaderCellDef>Dato 5</th>
+            <td mat-cell *matCellDef="let element">
+              <!-- {{ element.historialClinico.datoDinamico3.clave  | formatoVacio }}  : {{ element.historialClinico?.datoDinamico3?.valor | formatoVacio }} -->
+              {{ element.historialClinico?.datoDinamico3?.clave 
+                ? (element.historialClinico.datoDinamico3.clave + ' : ' + element.historialClinico.datoDinamico3.valor) 
+                : '--' }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="datoDinamico6">
+            <th mat-header-cell *matHeaderCellDef>Dato 6</th>
+            <td mat-cell *matCellDef="let element">
+              <!-- {{ element.historialClinico.datoDinamico3.clave  | formatoVacio }}  : {{ element.historialClinico?.datoDinamico3?.valor | formatoVacio }} -->
+              {{ element.historialClinico?.datoDinamico3?.clave 
+                ? (element.historialClinico.datoDinamico3.clave + ' : ' + element.historialClinico.datoDinamico3.valor) 
+                : '--' }}
+            </td>
+          </ng-container>
+  
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+      <button class="btn" (click)="cerrarPopUp()">Cerrar</button>
+    </div>
   </div>
 </div>

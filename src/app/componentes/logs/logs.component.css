@@ -1,0 +1,32 @@
+.table {
+    border: 3px solid #343B55;
+    border-radius: 15px; 
+     overflow: hidden;
+    border-collapse: separate;
+}
+
+table th{
+    background-color: #704cb6 ;
+}
+
+table.table-bordered td,
+table.table-bordered th {
+    border-right: none; 
+    border-left: none;
+}
+
+table.table-bordered tr td {
+    border-bottom: 1px solid #343B55; 
+}
+
+table.table-bordered tr th {
+    border-bottom: 1px solid #343B55; 
+}
+table{
+    background-color: aliceblue;
+}
+
+.container {
+    margin-top: 20px; /* Ajusta si es necesario */
+    padding-bottom: 20px; /* Añade espacio para que no "choque" con el footer */
+}

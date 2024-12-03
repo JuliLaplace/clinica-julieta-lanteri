@@ -5,6 +5,11 @@
     justify-content: space-around;
     background-color: #dd8ebe;
     height: 10vh;
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+    z-index: 100;
+    
 }
 
 .icono-datos{

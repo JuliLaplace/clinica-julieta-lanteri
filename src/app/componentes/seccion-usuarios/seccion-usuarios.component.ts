@@ -33,10 +33,9 @@ export class SeccionUsuariosComponent {
       tipo: usuario.tipo,
       edad: usuario.edad,
       dni: usuario.dni,
-      OS: usuario.obraSocial,
       imagen1: usuario.imagenPerfil1,
       imagen2: usuario.imagenPerfil2 ? usuario.imagenPerfil2 : 'Sin imagen',
-      obraSocial: usuario.obraSocial ? usuario.obraSocial : '',
+      obraSocial: usuario.obraSocial ? usuario.obraSocial : '--',
       especialidad: usuario.especialidad ? usuario.especialidad.join(', ') : '--',
 
     }));

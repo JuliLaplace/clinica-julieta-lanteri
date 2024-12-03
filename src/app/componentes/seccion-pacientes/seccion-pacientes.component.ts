@@ -3,16 +3,18 @@ import { DataTurnosService, HistorialClinico, Turno } from '../../servicios/data
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { DataUsuariosService, Usuario } from '../../servicios/data-usuarios.service';
-import { CambiarImagenDirective } from '../../directivas/cambiar-imagen.directive';
 import { MatCardModule } from '@angular/material/card';
 import { FormatoHoraPipe } from '../../pipes/formato-hora.pipe';
 import { SesionService } from '../../servicios/sesion.service';
 import { EstadoTurno } from '../../enumerables/estado-turno';
 import { FormatoVacioPipe } from '../../pipes/formato-vacio.pipe';
+import { PrefijoEspecialistaPipe } from '../../pipes/prefijo-especialista.pipe';
+import { TipoUsuario } from '../../enumerables/tipo-usuario';
+
 @Component({
   selector: 'app-seccion-pacientes',
   standalone: true,
-  imports: [CommonModule, MatTableModule, CambiarImagenDirective, MatCardModule, FormatoHoraPipe, FormatoVacioPipe],
+  imports: [CommonModule, MatTableModule, MatCardModule, FormatoHoraPipe, FormatoVacioPipe, PrefijoEspecialistaPipe],
   templateUrl: './seccion-pacientes.component.html',
   styleUrl: './seccion-pacientes.component.css'
 })
@@ -21,7 +23,10 @@ export class SeccionPacientesComponent implements OnInit {
   popUp: boolean = false;
   turnosUsuario : Turno[] | null = null;
   turnosUsuario1 : Turno[] | null = null;
+  tipoUsuario= TipoUsuario;
   displayedColumns: string[] = [
+    'fecha',
+    'especialista',
     'altura', 
     'peso', 
     'temperatura', 
@@ -36,8 +41,6 @@ export class SeccionPacientesComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    // const emails = this.dataTurnos.obtenerUsuariosAtendidos();
-    // this.usuariosAtendidos = await this.obtenerUsuariosPorEmail(emails);
     const emails = this.dataTurnos.obtenerUsuariosAtendidos();
     this.usuariosAtendidos = await this.obtenerUsuariosPorEmail(emails);
     console.log('Usuarios atendidos:', this.usuariosAtendidos);
@@ -58,12 +61,14 @@ export class SeccionPacientesComponent implements OnInit {
   }
 
   obtenerUltimosTurnos(usuario: Usuario): Turno[] {
-    const turnosDelUsuario = this.dataTurnos.coleccionTurnos.filter(turno => turno.usuario === usuario.mail && turno.especialista === this.sesion.getUsuario() && turno.estado == EstadoTurno.finalizado);
+    const turnosDelUsuario = this.dataTurnos.coleccionTurnos.filter(turno => turno.usuario == usuario.mail && (turno.estado != EstadoTurno.cancelado && turno.estado != EstadoTurno.rechazado));
     this.turnosUsuario = turnosDelUsuario.sort((a, b) => new Date(b.fechaTurno).getTime() - new Date(a.fechaTurno).getTime());
     return this.turnosUsuario.slice(0, 3);
   }
+
+
   verHistorialClinico(paciente: Usuario): void {
-    this.turnosUsuario1 = this.obtenerUltimosTurnos(paciente);
+    this.turnosUsuario1 = this.dataTurnos.coleccionTurnos.filter(turno => turno.usuario == paciente.mail && (turno.historialClinico));
     console.log('Turnos del paciente:', this.turnosUsuario1);
     console.log('Turnos en el modal:', this.turnosUsuario1);
     this.mostrarPopUp();

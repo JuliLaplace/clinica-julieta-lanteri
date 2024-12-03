@@ -1,0 +1,29 @@
+<h1>Estadísticas e informes</h1>
+<mat-tab-group class="contenedor">
+    <mat-tab label="Estadíticas">
+        <mat-tab-group class="sub-tab">
+            <mat-tab label="Turnos por día">
+                <app-pie-animada></app-pie-animada>
+            </mat-tab>
+
+            <mat-tab label="Turnos por especialidad">
+                <app-pie></app-pie>
+            </mat-tab>
+
+            <mat-tab label="Turnos solicitados">
+                <app-turnos-solicitados-medico></app-turnos-solicitados-medico>
+            </mat-tab>
+
+            <mat-tab label="Turnos finalizados">
+                <app-turnos-finalizados-medico></app-turnos-finalizados-medico>
+            </mat-tab>
+
+        </mat-tab-group>
+    </mat-tab>
+
+
+    <mat-tab label="Informes">
+        <app-logs></app-logs>
+    </mat-tab>
+
+</mat-tab-group>

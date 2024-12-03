@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormViewerService } from '../../servicios/form-viewer.service';
 import { DataUsuariosService, Usuario } from '../../servicios/data-usuarios.service';
 import { LoaderService } from '../../servicios/loader.service';
@@ -14,11 +14,12 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { DataEspecialidadesService } from '../../servicios/data-especialidades.service';
 import { LoginService } from '../../servicios/login.service';
 import { SesionService } from '../../servicios/sesion.service';
+import { RickaptchaComponent } from '../rickaptcha/rickaptcha.component';
 
 @Component({
   selector: 'app-formulario-especialista',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterLink, RecaptchaModule, MatFormFieldModule, MatSelectModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterLink, RecaptchaModule, MatFormFieldModule, MatSelectModule, RickaptchaComponent],
   templateUrl: './formulario-especialista.component.html',
   styleUrl: './formulario-especialista.component.css'
 })
@@ -27,9 +28,11 @@ export class FormularioEspecialistaComponent implements OnInit{
   altaPersona!: FormGroup;
   botonSeleccionado: string = '';
   loading: boolean = false;
-  captchaResponse : string | null=null;
+  captchaResponse : boolean =false;
   foto1! : File;
   especialidadesBD: string [] = [];
+
+  @Output() loadingChange = new EventEmitter<boolean>();
 
   constructor(public servicioForm : FormViewerService, private dataUsuarios : DataUsuariosService, private servicioLoader: LoaderService, private servicioStorage: StorageService, public dataEspecialidades : DataEspecialidadesService, private servicioLogin: LoginService, public sesion : SesionService){
 
@@ -50,10 +53,13 @@ export class FormularioEspecialistaComponent implements OnInit{
   }
   cargarPersona(){   
       
+    if(this.altaPersona.valid){
+
       const email = this.altaPersona.get('email')?.value;
       const pwd = this.altaPersona.get('pwd')?.value;
       this.servicioLoader.setLoading(true); 
       this.loading = this.servicioLoader.getLoading();
+      this.loadingChange.emit(true);
 
       this.servicioLogin.registrar(email, pwd)
       .then((res) => {
@@ -66,7 +72,7 @@ export class FormularioEspecialistaComponent implements OnInit{
           // this.servicioLoader.setLoading(false);
 
           Swal.fire({
-            title: "¡Paciente registrado con exito!",
+            title: "Especialista registrado con exito!",
             showClass: {
               popup: `
                 animate__animated
@@ -83,12 +89,15 @@ export class FormularioEspecialistaComponent implements OnInit{
             }
           });
           this.loading = this.servicioLoader.getLoading();
+          this.loadingChange.emit(false);
           // this.altaPersona.reset();
         })
         .catch(error => {
           console.error('Error al crear usuario:', error);
+          this.loadingChange.emit(false);
           
         });
+    }
     
   }
 
@@ -145,9 +154,8 @@ export class FormularioEspecialistaComponent implements OnInit{
     this.botonSeleccionado = usuario;
   }
 
-  resolved(captchaResponse: string | null) {
+  resolved(captchaResponse: boolean) {
     this.captchaResponse = captchaResponse;
-    console.log("Captcha resuelto:", this.captchaResponse); // Para verificación
 
   }
   agregarEspecialidad() {

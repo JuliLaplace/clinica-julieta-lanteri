@@ -1,0 +1,22 @@
+<div class="flexrow centered" [style.padding-bottom.px]="20" [style.gap.px]="30">
+  <mat-form-field>
+      <mat-label>Desde</mat-label>
+      <input matInput [matDatepicker]="pickerSolicitadosFrom" (dateChange)="filtrarFechaTurnosSolicitados()" [(ngModel)]="fechaTurnosSolicitadosDesde">
+      <mat-hint>DD/MM/AAAA</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="pickerSolicitadosFrom"></mat-datepicker-toggle>
+      <mat-datepicker #pickerSolicitadosFrom></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field>
+      <mat-label>Hasta</mat-label>
+      <input matInput [matDatepicker]="pickerSolicitadosTo" (dateChange)="filtrarFechaTurnosSolicitados()" [(ngModel)]="fechaTurnosSolicitadosHasta">
+      <mat-hint>DD/MM/AAAA</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="pickerSolicitadosTo"></mat-datepicker-toggle>
+      <mat-datepicker #pickerSolicitadosTo></mat-datepicker>
+  </mat-form-field>
+</div>
+
+<highcharts-chart *ngIf="opcionesBarra"
+  [Highcharts]="barra"
+  [options]="opcionesBarra"
+  style="width: 100%; height: 400px; display: block;"
+></highcharts-chart>

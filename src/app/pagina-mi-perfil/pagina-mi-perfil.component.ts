@@ -8,12 +8,13 @@ import { FormsModule } from '@angular/forms';
 import { jsPDF } from 'jspdf';
 import { DataTurnosService, Turno } from '../servicios/data-turnos.service';
 import { EstadoTurno } from '../enumerables/estado-turno';
+import { AtencionesPacienteComponent } from '../componentes/atenciones-paciente/atenciones-paciente.component';
 
 
 @Component({
   selector: 'app-pagina-mi-perfil',
   standalone: true,
-  imports: [CardPerfilComponent, CommonModule, HorariosEspecialistaComponent, FormsModule],
+  imports: [CardPerfilComponent, CommonModule, HorariosEspecialistaComponent, FormsModule, AtencionesPacienteComponent],
   templateUrl: './pagina-mi-perfil.component.html',
   styleUrl: './pagina-mi-perfil.component.css'
 })
@@ -48,36 +49,7 @@ export class PaginaMiPerfilComponent {
     return this.turnosPaciente;
   }
 
-  // descargarPDF() {
-
-  //   this.obtenerUltimosTurnos();
-  //   const doc = new jsPDF();
-  //   // const logo = 'src/assets/logo.png';
-  //   doc.addImage(this.logoBase64, 'PNG', 10, 10, 30, 30); 
-
-    
-  //   doc.setFontSize(18);
-  //   doc.text('Informe de Historia Clínica', 50, 20);
-  //   doc.setFontSize(12);
-  //   doc.text('Fecha de emisión: ' + new Date().toLocaleDateString(), 50, 30);
-
-    
-  //   doc.setFontSize(12);
-  //   doc.text('Turnos del paciente:', 10, 40);
-  //   if(this.turnosPaciente){
-  //     this.turnosPaciente.forEach((turno, index) => {
-  //       const yPosition = 50 + index * 10;
-  //       doc.text(
-  //         `Especialista: ${turno.especialistaNombre}, Especialidad: ${turno.especialidad}, Fecha: ${turno.fechaTurno}, Hora: ${turno.horaTurno}`,
-  //         10,
-  //         yPosition
-  //       );
-  //     });
-  //   }
-
-
-  //   doc.save('historia_clinica_' + this.sesion.usuarioBD?.nombre + '.pdf');
-  // }
+  
   descargarPDF() {
     this.obtenerUltimosTurnos();
   

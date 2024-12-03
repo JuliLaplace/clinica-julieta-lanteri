@@ -1,0 +1,62 @@
+<div class="captcha-wrapper" (click)="showPopUp()">
+    <div class="error-wrapper">
+        <p class="captcha-error" *ngIf="captchaError">{{captchaErrorMsg}}</p>
+    </div>
+    <div class="captcha-banner">
+        <div class="captcha-checkbox" [class.captcha-checkbox-error]="captchaError">
+            <img *ngIf="captchaSuccess"
+                class="checkmark" src="../../../assets/captcha/check.gif" alt="">
+        </div>
+        <img class="robot" src="../../../assets/captcha/robot_mantequilla.png" alt="">
+        <p class="captcha-prompt">No soy un robot de mantequilla.</p>
+        <div class="captcha-logo-container">
+            <img class="captcha-logo" src="../../../assets/captcha/rickaptcha.png" alt="">
+            <p class="captcha-logo-txt">ricKAPTCHA</p>
+        </div>
+    </div>
+</div>
+
+<div class="captcha-popup-container" *ngIf="displayPopUp">
+
+    <div class="captcha">
+
+        <h2>Usa las flechas para rotar la imagen hasta coincidir con la pistola de portales.</h2>
+        <div class="img-container">
+
+            <div class="direction-container">
+                <div class="direction-img-container">
+                    <canvas #directionCanvas></canvas>
+                </div>
+
+                <div class="msg-container">
+                    <p>Coincidí con éste ángulo</p>
+                    <fa-icon [icon]="iconPoint"></fa-icon>
+                </div>
+            </div>
+
+            <div class="target-container">
+                <div class="target-img-container">
+                    <canvas #targetCanvas></canvas>
+                </div>
+
+                <div class="btn-container">
+                    <button class="arrow-btn" (click)="previousIndex()"><fa-icon
+                            [icon]="iconArrowLeft"></fa-icon></button>
+                    <div class="item-container">
+                        <div class="dot" *ngFor="let i of numbers; let dotIndex = index"
+                            [class.active-dot]="this.captchaService.isCurrentIndex(dotIndex)"></div>
+                    </div>
+                    <button class="arrow-btn" (click)="nextIndex()"><fa-icon [icon]="iconArrowRight"></fa-icon></button>
+                </div>
+            </div>
+        </div>
+
+        <button class="submit-btn" (click)="completeCaptcha()">Resolver captcha</button>
+
+        <div class="reload-btn-container">
+            <button class="reload-btn" (click)="back()"><fa-icon [icon]="iconBack"></fa-icon></button>
+            <button class="reload-btn" (click)="reload()"><fa-icon [icon]="iconReload"></fa-icon></button>
+        </div>
+    </div>
+
+</div>

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { SesionService } from './sesion.service';
 import { DataUsuariosService } from './data-usuarios.service';
 import { TipoUsuario } from '../enumerables/tipo-usuario';
+import { LoggerService } from './logger.service';
 
 export interface loginError {
   errorFlag: boolean;
@@ -16,7 +17,7 @@ export interface loginError {
 })
 export class LoginService {
 
-  constructor(private auth: Auth, private router: Router, private sesion: SesionService, private dataUsuarios : DataUsuariosService) { }
+  constructor(private auth: Auth, private router: Router, private sesion: SesionService, private dataUsuarios : DataUsuariosService, private logger : LoggerService) { }
 
 
   async registrar(email: string, pwd: string): Promise<loginError> {
@@ -105,6 +106,7 @@ export class LoginService {
           }
 
           this.router.navigate(['/home']);
+          this.logger.crearLog();
           return error;
         });
 

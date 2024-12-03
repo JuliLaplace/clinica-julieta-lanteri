@@ -1,0 +1,85 @@
+.contenedor {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+
+.tabla-container {
+    width: 100%;
+}
+
+.tabla-scroll {
+    max-height: 450px;
+    overflow-y: auto;
+    position: relative;
+    /* border: 1px solid #ccc; */
+}
+
+.tabla-scroll table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.tabla-scroll th{
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: #704cb6;
+    color: #ddd;
+}
+.tabla-scroll th,
+.tabla-scroll td {
+    padding: 7px 10px;
+    border: 1px solid #704cb6;
+    text-align: center;
+}
+
+.tabla-container .realizado {
+    color: green;
+    font-weight: bold;
+}
+
+.tabla-container .pendiente {
+    color: orange;
+    font-weight: bold;
+}
+
+.tabla-container .cancelado {
+    color: red;
+    font-weight: bold;
+}
+
+.btn {
+    color: #fff;
+    font-size: 16px;
+    padding: 10px;
+    text-align: center;
+    border-radius: 20px;
+    background-color: #913b9ca6;
+    border: none;
+    margin: 5px;
+    width: 27%;
+}
+
+.btn:hover {
+    background-color: rebeccapurple;
+    color: aliceblue;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 0px 5px 5px 5px;
+}
+
+.form-select {
+    width: 30%;
+    margin-right: 10px;
+    border: 2px solid #704cb6;
+}
+
+p {
+    margin: 0;
+}

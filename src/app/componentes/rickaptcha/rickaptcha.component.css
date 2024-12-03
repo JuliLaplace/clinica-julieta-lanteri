@@ -1,0 +1,269 @@
+.wrapper {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+.captcha-banner {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: #f9f9f9;
+    border: 1px solid #d3d3d3;
+    /* height: 150px; */
+    height: 85px;
+    width: 300px;
+    border-radius: 5px;
+    padding: 0 15px;
+    gap: 10px;
+    overflow: hidden;
+}
+
+.captcha-checkbox {
+    position: relative;
+    border: 2px solid #c1c1c1;
+    width: 28px;
+    height: 34px;
+    border-radius: 2px;
+    cursor: pointer;
+    padding: 0 15px;
+}
+
+.captcha-checkbox-error {
+    border: 2px solid #f00 !important;
+}
+
+.checkmark {
+    position: absolute;
+    top: -60%;
+    left: 10%;
+    width: 28px;
+    height: auto;
+}
+
+
+.error-wrapper {
+    position: relative;
+    float: left;
+    height: 100%;
+    width: 100%;
+}
+
+.captcha-error {
+    position: absolute;
+    margin-left: 10px;
+    font-size: 10px;
+    color: #f00;
+}
+
+
+.captcha-prompt {
+    color: black;
+    font-size: 14px;
+    line-height: 17px;
+    margin: 0;
+}
+
+
+.robot {
+    height: 40px;
+    width: auto;
+}
+
+.captcha-logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.captcha-logo {
+    height: 32px;
+    width: auto;
+    padding: 0 5px;
+}
+
+.captcha-logo-txt {
+    margin: 0;
+    color: #6a6a6a;
+    font-size: 10px;
+    line-height: 10px;
+}
+
+
+
+
+
+.captcha-popup-container {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.2);
+    backdrop-filter: blur(2px);
+    z-index: 200;
+}
+
+.captcha {
+    width: 500px;
+    background-color: white;
+    border-radius: 5px;
+    padding: 20px;
+    border: 2px solid #b5fd5c;
+}
+
+h2 {
+    font-size: 22px;
+    text-align: center;
+}
+
+.img-container {
+    padding: 10px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: start;
+    gap: 10px;
+}
+
+.direction-container {
+    display: flex;
+    flex-direction: column;
+    width: 35%;
+}
+
+.target-container {
+    display: flex;
+    flex-direction: column;
+    width: 65%;
+}
+
+.direction-img-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    background: url('../../../assets/captcha/backgrounds/bg1.webp'), #262c3a;
+    background-size: contain;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    border-radius: 5px;
+}
+
+.target-img-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    background: url('../../../assets/captcha/backgrounds/bg2.jpg'), #262c3a;
+    background-size: contain;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    border-radius: 5px;
+}
+
+.target-img-container img {
+    height: 250px;
+}
+
+.msg-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 5px 0;
+    gap: 5px;
+}
+
+.msg-container p {
+    font-size: 17px;
+    margin: 0;
+    text-align: center;
+}
+
+.msg-container fa-icon {
+    font-size: 25px;
+}
+
+.submit-btn {
+    width: 100%;
+}
+
+.arrow-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 30px;
+    width: 45px;
+    height: 45px;
+    background-color: white;
+}
+
+
+.btn-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 5px 0;
+}
+
+.item-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.dot {
+    width: 15px;
+    height: 15px;
+    border: 2px solid #404040;
+    background-color: transparent;
+    border-radius: 50%;
+}
+
+.active-dot {
+    background-color: #82df14;
+}
+
+.reload-btn-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+
+.submit-btn {
+    padding: 5px 0;
+    font-size: 20px;
+    border-radius: 5px;
+    background-color: #82df14;
+    color: black;
+}
+
+.reload-btn {
+    border-radius: 10px;
+    font-size: 20px;
+    background-color: #82df14;
+    color: black;
+}

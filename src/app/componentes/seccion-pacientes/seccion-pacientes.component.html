@@ -101,7 +101,7 @@
           <h3 *ngIf="obtenerUltimosTurnos(paciente).length>0">Últimos turnos:</h3>
           <ul>
             <li *ngFor="let turno of obtenerUltimosTurnos(paciente)">
-              {{ turno.fechaTurno }} a las {{ turno.horaTurno | formatoHora }}
+              {{ turno.fechaTurno }} a las {{ turno.horaTurno | formatoHora }}. Atendido por {{turno.especialistaNombre | prefijoEspecialista:tipoUsuario.especialista}} (Estado: {{turno.estado}} )
             </li>
           </ul>
           <button class="btn" (click)="verHistorialClinico(paciente)">Ver Historia Clínica</button>
@@ -109,56 +109,109 @@
       </mat-card>
     </div>
   </div>
-
   <div *ngIf="usuariosAtendidos.length == 0">
-    <p>No se han atendido pacientes aún.</p>
+    <h4 style="text-align: center;">No se han atendido pacientes aún.</h4>
   </div>
 
   <div *ngIf="popUp" class="modal">
     <div class="modal-content">
-      <h3>Historial Clínico</h3>
-      <div *ngIf="turnosUsuario1 && turnosUsuario1.length > 0">
+      <div *ngIf="turnosUsuario1 && turnosUsuario1.length > 0 && turnosUsuario1">
+        <h3 *ngIf="turnosUsuario1">Historial Clínico {{turnosUsuario1[0].usuarioNombre}}</h3>
         <table mat-table [dataSource]="turnosUsuario1" class="mat-elevation-z8">
           
+          <ng-container matColumnDef="fecha">
+            <th mat-header-cell *matHeaderCellDef>Fecha</th>
+            <td mat-cell *matCellDef="let element">{{ element.fechaTurno}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="especialista">
+            <th mat-header-cell *matHeaderCellDef>Especialista</th>
+            <td mat-cell *matCellDef="let element">{{ element.especialistaNombre | prefijoEspecialista:tipoUsuario.especialista}}</td>
+          </ng-container>
 
           <ng-container matColumnDef="altura">
             <th mat-header-cell *matHeaderCellDef>Altura</th>
-            <td mat-cell *matCellDef="let element">{{ element.historial?.altura | formatoVacio }} cm</td>
+            <td mat-cell *matCellDef="let element">{{ element.historialClinico.altura | formatoVacio }} cm</td>
           </ng-container>
   
           
           <ng-container matColumnDef="peso">
             <th mat-header-cell *matHeaderCellDef>Peso</th>
-            <td mat-cell *matCellDef="let element">{{ element.historial?.peso | formatoVacio }} kg</td>
+            <td mat-cell *matCellDef="let element">{{ element.historialClinico.peso | formatoVacio }} kg</td>
           </ng-container>
   
          
           <ng-container matColumnDef="temperatura">
             <th mat-header-cell *matHeaderCellDef>Temperatura</th>
-            <td mat-cell *matCellDef="let element">{{ element.historial?.temperatura | formatoVacio }} °C</td>
+            <td mat-cell *matCellDef="let element">{{ element.historialClinico.temperatura | formatoVacio }} °C</td>
           </ng-container>
   
           
           <ng-container matColumnDef="presion">
             <th mat-header-cell *matHeaderCellDef>Presión</th>
-            <td mat-cell *matCellDef="let element">{{ element.historial?.presion | formatoVacio }} mmHg</td>
+            <td mat-cell *matCellDef="let element">{{ element.historialClinico.presion | formatoVacio }} mmHg</td>
           </ng-container>
   
           <!-- Datos Dinámicos -->
            
           <ng-container matColumnDef="datoDinamico1">
-            <th mat-header-cell *matHeaderCellDef>Dato Dinámico 1</th>
-            <td mat-cell *matCellDef="let element"> {{element.historial?.datoDinamico1.clave | formatoVacio }} : {{ element.historial?.datoDinamico1?.valor | formatoVacio }}</td>
+            <th mat-header-cell *matHeaderCellDef>Dato 1</th>
+            <td mat-cell *matCellDef="let element"> 
+              <!-- {{element.historialClinico.datoDinamico1.clave | formatoVacio }} : {{ element.historialClinico?.datoDinamico1?.valor | formatoVacio }} -->
+              {{ element.historialClinico?.datoDinamico1?.clave 
+                ? (element.historialClinico.datoDinamico1.clave + ' : ' + element.historialClinico.datoDinamico1.valor) 
+                : '--' }}
+            </td>
           </ng-container>
   
           <ng-container matColumnDef="datoDinamico2">
-            <th mat-header-cell *matHeaderCellDef>Dato Dinámico 2</th>
-            <td mat-cell *matCellDef="let element">{{ element.historial?.datoDinamico2?.valor  | formatoVacio  }}</td>
+            <th mat-header-cell *matHeaderCellDef>Dato 2</th>
+            <td mat-cell *matCellDef="let element">
+              <!-- {{ element.historialClinico.datoDinamico2.clave  | formatoVacio  }}  : {{ element.historialClinico.datoDinamico2.valor | formatoVacio }} -->
+              {{ element.historialClinico?.datoDinamico2?.clave 
+                ? (element.historialClinico.datoDinamico2.clave + ' : ' + element.historialClinico.datoDinamico2.valor) 
+                : '--' }}
+            </td>
           </ng-container>
   
           <ng-container matColumnDef="datoDinamico3">
-            <th mat-header-cell *matHeaderCellDef>Dato Dinámico 3</th>
-            <td mat-cell *matCellDef="let element">{{ element.historial?.datoDinamico3?.valor  | formatoVacio }}</td>
+            <th mat-header-cell *matHeaderCellDef>Dato 3</th>
+            <td mat-cell *matCellDef="let element">
+              <!-- {{ element.historialClinico.datoDinamico3.clave  | formatoVacio }}  : {{ element.historialClinico?.datoDinamico3?.valor | formatoVacio }} -->
+              {{ element.historialClinico?.datoDinamico3?.clave 
+                ? (element.historialClinico.datoDinamico3.clave + ' : ' + element.historialClinico.datoDinamico3.valor) 
+                : '--' }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="datoDinamico4">
+            <th mat-header-cell *matHeaderCellDef>Dato 4</th>
+            <td mat-cell *matCellDef="let element">
+              <!-- {{ element.historialClinico.datoDinamico3.clave  | formatoVacio }}  : {{ element.historialClinico?.datoDinamico3?.valor | formatoVacio }} -->
+              {{ element.historialClinico?.datoDinamico3?.clave 
+                ? (element.historialClinico.datoDinamico3.clave + ' : ' + element.historialClinico.datoDinamico3.valor) 
+                : '--' }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="datoDinamico5">
+            <th mat-header-cell *matHeaderCellDef>Dato 5</th>
+            <td mat-cell *matCellDef="let element">
+              <!-- {{ element.historialClinico.datoDinamico3.clave  | formatoVacio }}  : {{ element.historialClinico?.datoDinamico3?.valor | formatoVacio }} -->
+              {{ element.historialClinico?.datoDinamico3?.clave 
+                ? (element.historialClinico.datoDinamico3.clave + ' : ' + element.historialClinico.datoDinamico3.valor) 
+                : '--' }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="datoDinamico6">
+            <th mat-header-cell *matHeaderCellDef>Dato 6</th>
+            <td mat-cell *matCellDef="let element">
+              <!-- {{ element.historialClinico.datoDinamico3.clave  | formatoVacio }}  : {{ element.historialClinico?.datoDinamico3?.valor | formatoVacio }} -->
+              {{ element.historialClinico?.datoDinamico3?.clave 
+                ? (element.historialClinico.datoDinamico3.clave + ' : ' + element.historialClinico.datoDinamico3.valor) 
+                : '--' }}
+            </td>
           </ng-container>
   
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

@@ -3,7 +3,7 @@
     
     <div class="filtros">
       <div class="filtros">
-          <input type="text" id="buscar" placeholder="Buscar por especialidad o especialista" [(ngModel)]="buscador" >
+          <input type="text" id="buscar" placeholder="Buscar por palabra clave (nombre, estado, historial clínico, etc)" [(ngModel)]="buscador" >
       </div>
     </div>
 
@@ -17,6 +17,8 @@
             <th>Fecha</th>
             <th>Hora</th>
             <th>Estado</th>
+            <th>Historial Clínico Estático</th>
+            <th>Historial Clínico Dinámico</th>
             <th>Acción</th>
           </tr>
         </thead>
@@ -32,11 +34,29 @@
               </span>
             </td>
             <td>
+              <p *ngIf="turno.historialClinico">Altura: {{ turno.historialClinico.altura }} cm.</p>
+              <p *ngIf="turno.historialClinico">Peso: {{ turno.historialClinico.peso }} kg.</p>
+              <p *ngIf="turno.historialClinico">Temperatura: {{ turno.historialClinico.temperatura }} °C.</p>
+              <p *ngIf="turno.historialClinico">Presión: {{ turno.historialClinico.presion }} mmHg.</p>
+              
+            </td>
+            <td>
+              <p *ngIf="turno.historialClinico?.datoDinamico1">{{ turno.historialClinico?.datoDinamico1?.clave }} : {{turno.historialClinico?.datoDinamico1?.valor}}</p>
+              <p *ngIf="turno.historialClinico?.datoDinamico2">{{ turno.historialClinico?.datoDinamico2?.clave }} : {{turno.historialClinico?.datoDinamico2?.valor}}</p>
+              <p *ngIf="turno.historialClinico?.datoDinamico3">{{ turno.historialClinico?.datoDinamico3?.clave }} : {{turno.historialClinico?.datoDinamico3?.valor}}</p>
+              <p *ngIf="turno.historialClinico?.estres">Nivel de estrés: {{turno?.historialClinico?.estres}}</p>
+              <p *ngIf="turno.historialClinico?.diasSintomas">Días con síntomas: {{turno?.historialClinico?.diasSintomas}}</p>
+              <p *ngIf="turno.historialClinico?.fumador">Es fumador: {{turno.historialClinico?.fumador | booleanTexto}}</p>
+            </td>
+        
+            <td>
               
               <button class="btn" *ngIf="turno.estado == estadoTurno.pendiente" (click)="mostrarComentario(turno, 'cancelar')">Cancelar Turno</button>
-              <button class="btn" *ngIf="turno.resena!= null || turno.comentario!=null"  (click)="mostrarResena(turno)">Ver Reseña </button>
-              <button class="btn" *ngIf="turno.estado == estadoTurno.finalizado && turno.resena!=null" (click)="mostrarEncuesta(turno)"> Completar Encuesta</button>
-              <button class="btn" *ngIf="turno.estado == estadoTurno.finalizado" > Calificar Atención</button>
+              <button class="btn" *ngIf="turno.resena!= null "  (click)="mostrarResena(turno)">Ver Reseña </button>
+              <button class="btn" *ngIf="turno.comentario!=null"  (click)="verComentario(turno)">Ver Comentario </button>
+              <button class="btn" *ngIf="turno.estado == estadoTurno.finalizado && turno.resena!=null && turno.encuesta==null" (click)="mostrarEncuesta(turno)"> Completar Encuesta</button>
+              <button class="btn" *ngIf="turno.estado == estadoTurno.finalizado && turno.resena!=null && turno.encuesta!=null" (click)="verEncuesta(turno)"> Ver Encuesta</button>
+              <button class="btn" *ngIf="turno.estado == estadoTurno.finalizado && turno.calificacion==null" (click)="mostrarCalificacion(turno)"> Calificar Atención</button>
             </td>
           </tr>
         </tbody>
@@ -54,119 +74,157 @@
       </div>
     </div>
 
-    <div *ngIf="resenaVisible" class="modal">
-      <div class="modal-content" *ngIf="turnoSeleccionado?.resena !=null">
-        <h3>Reseña de {{turnoSeleccionado?.resena?.usuario}} ({{turnoSeleccionado?.resena?.tipoUsuario}})</h3>
-        <p>Reseña: {{turnoSeleccionado?.resena?.comentario}}</p>
-        <p>Acción: {{turnoSeleccionado?.resena?.accion}}</p>
+
+    <div *ngIf="calificacionVisible" class="modal">
+      <div class="modal-content">
+        <h3>Calificar Turno</h3>
+        <div class="stars">
+          <button *ngFor="let star of [1, 2, 3, 4, 5]" (click)="calificar(star)">
+            <span [ngClass]="{'filled': star <= rating, 'empty': star > rating}">★</span>
+          </button>
+        </div>
+        <p>Calificación: {{ rating }}</p>
+        <p>Deje un comentario:</p>
+        <textarea [(ngModel)]="comentario" placeholder="Motivo:"></textarea>
         <div class="modal-buttons">
-          <button (click)="cerrarModal('resena')">Cerrar</button>
+          <button (click)="calificarTurno()">Confirmar</button>
+          <button (click)="cerrarModal('calificacion')">Cerrar</button>
         </div>
       </div>
-      <div class="modal-content" *ngIf="turnoSeleccionado?.comentario !=null">
-        <h3>Comentario de {{turnoSeleccionado?.comentario?.usuario}} ({{turnoSeleccionado?.comentario?.tipoUsuario}})</h3>
-        <p>Reseña: {{turnoSeleccionado?.comentario?.comentario}}</p>
-        <p>Acción: {{turnoSeleccionado?.comentario?.accion}}</p>
+    </div>
+
+    <div *ngIf="resenaVisible" class="modal">
+      <div class="modal-content" *ngIf="turnoSeleccionado?.resena !=null">
+        <h3>Reseña</h3>
+        <p>Realizado por {{turnoSeleccionado?.resena?.usuario}} ({{turnoSeleccionado?.resena?.tipoUsuario}})</p>
+        <p>Reseña: {{turnoSeleccionado?.resena?.comentario}}</p>
+        <p>Acción: {{turnoSeleccionado?.resena?.accion}} por el usuario </p>
         <div class="modal-buttons">
           <button (click)="cerrarModal('resena')">Cerrar</button>
         </div>
       </div>
     </div>
 
-    <!-- <div *ngIf="encuestaVisible" class="modal">
+    <div *ngIf="mostrarModalComentario" class="modal">
+      <div class="modal-content" *ngIf="turnoSeleccionado?.comentario !=null">
+        <h3>Comentario</h3>
+        <p>Realizado por {{turnoSeleccionado?.comentario?.usuario}} ({{turnoSeleccionado?.comentario?.tipoUsuario}})</p>
+        <p>Comentario: {{turnoSeleccionado?.comentario?.comentario}}</p>
+        <p>Acción: {{turnoSeleccionado?.comentario?.accion}}</p>
+        <div class="modal-buttons">
+          <button (click)="cerrarModal('comentarioModal')">Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="mostrarResultadosEncuesta" class="modal">
+      <div class="modal-content" *ngIf="turnoSeleccionado?.encuesta !=null">
+        <h3>Respuestas de encuesta</h3>
+        <p>Realizado por {{turnoSeleccionado?.usuarioNombre}} (Paciente)</p>
+        <p>Calificación sobre la atención del personal: {{turnoSeleccionado?.encuesta?.atencionPersonal}}</p>
+        <p>Calificación sobre la clínica y sus instalaciónes: {{turnoSeleccionado?.encuesta?.calificacionClinica}}</p>
+        <p>¿Recomendaría nuestra clínica?: {{turnoSeleccionado?.encuesta?.recomendacion}} </p>
+        <div class="modal-buttons">
+          <button (click)="cerrarModal('resultadoEncuesta')">Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="encuestaVisible" class="modal">
       <div class="modal-content">
         <h3>Complete la encuesta</h3>
-        <textarea [(ngModel)]="comentario" placeholder="Motivo de la cancelación"></textarea>
-        
-        <div class="modal-buttons">
-          <button (click)="cargarEncuesta()">Cargar Encuesta</button>
-          <button (click)="cerrarModal()">Cerrar</button>
-        </div>
-      </div>
-    </div> -->
-  </div>
-
-  <div class="contenedor" *ngIf="sesion.esEspecialista()">
-    <h1>Mis Turnos</h1>
-    <div class="filtros">
-      <div class="filtros">
-          <input type="text" id="buscar" placeholder="Buscar por especialidad o especialista" [(ngModel)]="buscador" >
-      </div>
-    </div>
-    <div class="tabla-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Paciente</th>
-            <th>Especialidad</th>
-            <th>Fecha</th>
-            <th>Estado</th>
-            <th>Acción</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let turno of obtenerTurnosFiltradosEspecialista()">
-            <td>{{ turno.usuarioNombre }}</td>
-            <td>{{ turno.especialidad }}</td>
-            <td>{{ turno.fechaTurno }}</td>
-            <td>
-              <span [appEstadoTurno]="turno.estado">
-                {{ turno.estado }}
-              </span>
-            </td>
-            <td>
-              
-              <button class="btn" *ngIf="turno.estado == estadoTurno.pendiente" (click)="mostrarComentario(turno, 'cancelar')">Cancelar Turno</button>
-              <button class="btn" *ngIf="turno.estado == estadoTurno.pendiente" (click)="mostrarComentario(turno, 'rechazar')">Rechazar turno </button>
-              <button class="btn" *ngIf="turno.estado ==  estadoTurno.pendiente" (click)="aceptarTurno(turno)"> Aceptar turno</button>
-              <button class="btn" *ngIf="turno.estado == estadoTurno.aceptado" (click)="mostrarHistorial(turno)"> Finalizar Turno</button>
-              <button class="btn" *ngIf="turno.resena!= null || turno.comentario!=null"  (click)="mostrarResena(turno)"> Ver Reseña</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+        <form [formGroup]="formEncuesta" (ngSubmit)="cargarEncuesta()">
   
-    <div *ngIf="comentarioVisible" class="modal">
-      <div class="modal-content">
-        <h3 *ngIf="accion =='cancelar'">Cancelar Turno</h3>
-        <h3 *ngIf="accion =='rechazar'">Rechazar Turno</h3>
-        <!-- <h3 *ngIf="accion =='finalizar'">Finalizar Turno</h3> -->
-        <textarea [(ngModel)]="comentario" placeholder="Motivo:"></textarea>
-        <!-- <textarea *ngIf="accion =='finalizar'" [(ngModel)]="diagnostico" placeholder="Diagnóstico:"></textarea> -->
-        <div class="modal-buttons">
-          <button *ngIf="accion =='cancelar'" (click)="cancelarTurno()">Confirmar</button>
-          <button *ngIf="accion =='rechazar'" (click)="rechazarTurno()">Confirmar</button>
-          <!-- <button *ngIf="accion =='finalizar'" (click)="finalizarTurno()">Confirmar</button> -->
-          <button (click)="cerrarModal('comentario')">Cerrar</button>
-        </div>
-      </div>
-    </div>
+          <div  class="fijos">
+            <div class="row">
+              <label for="atencionPersonal">
+                <strong>¿Cómo calificaría la atención recibida por parte del personal médico?</strong>
+              </label>
+              <div>
+                <label>
+                  <input type="radio" formControlName="atencionPersonal" [value]="' Muy insatisfecho'" />
+                  Muy insatisfecho
+                </label>
+                <label>
+                  <input type="radio" formControlName="atencionPersonal" [value]="' Insatisfecho'" />
+                  Insatisfecho
+                </label>
+                <label>
+                  <input type="radio" formControlName="atencionPersonal" [value]="'Neutral'" />
+                  Neutral
+                </label>
+                <label>
+                  <input type="radio" formControlName="atencionPersonal" [value]="'Satisfecho'" />
+                  Satisfecho
+                </label>
+                <label>
+                  <input type="radio" formControlName="atencionPersonal" [value]="'Muy satisfecho'" />
+                  Muy satisfecho
+                </label>
+              </div>
+            </div>
 
-    <div *ngIf="resenaVisible" class="modal">
-      <div class="modal-content" *ngIf="turnoSeleccionado?.resena !=null">
-        <h3>Reseña de {{turnoSeleccionado?.resena?.usuario}} ({{turnoSeleccionado?.resena?.tipoUsuario}})</h3>
-        <p>Reseña: {{turnoSeleccionado?.resena?.comentario}}</p>
-        <p>Acción: {{turnoSeleccionado?.resena?.accion}}</p>
-        <div class="modal-buttons">
-          <button (click)="cerrarModal('resena')">Cerrar</button>
-        </div>
-      </div>
-      <div class="modal-content" *ngIf="turnoSeleccionado?.comentario !=null">
-        <h3>Comentario de {{turnoSeleccionado?.comentario?.usuario}} ({{turnoSeleccionado?.comentario?.tipoUsuario}})</h3>
-        <p>Reseña: {{turnoSeleccionado?.comentario?.comentario}}</p>
-        <p>Acción: {{turnoSeleccionado?.comentario?.accion}}</p>
-        <div class="modal-buttons">
-          <button (click)="cerrarModal('resena')">Cerrar</button>
-        </div>
+            <div class="row">
+              <label for="calificacionClinica">
+                <strong>¿Cómo calificaría su experiencia en nuestra clínica?</strong>
+              </label>
+              <div>
+                <label>
+                  <input type="radio" formControlName="calificacionClinica" [value]="'Muy insatisfecho'" />
+                  Muy insatisfecho
+                </label>
+                <label>
+                  <input type="radio" formControlName="calificacionClinica" [value]="'Insatisfecho'" />
+                  Insatisfecho
+                </label>
+                <label>
+                  <input type="radio" formControlName="calificacionClinica" [value]="'Neutral'" />
+                  Neutral
+                </label>
+                <label>
+                  <input type="radio" formControlName="calificacionClinica" [value]="'Satisfecho'" />
+                  Satisfecho
+                </label>
+                <label>
+                  <input type="radio" formControlName="calificacionClinica" [value]="'Muy satisfecho'" />
+                  Muy satisfecho
+                </label>
+              </div>
+            </div>
+            
+            <div class="row">
+              <label for="recomendacion">
+                <strong>Recomendaría esta clínica a otras personas?</strong>
+              </label>
+              <div>
+                <label>
+                  <input type="radio" formControlName="recomendacion" [value]="'Si'" />
+                  Sí
+                </label>
+                <label>
+                  <input type="radio" formControlName="recomendacion" [value]="'No'" />
+                  No
+                </label>
+                <label>
+                  <input type="radio" formControlName="recomendacion" [value]="'Tal vez'" />
+                  Tal vez
+                </label>
+              </div>
+            </div>
+          </div>
+  
+          <div class="modal-buttons">
+            <button [disabled]="!this.formEncuesta.valid" >Confirmar</button>
+            <button (click)="cerrarModal('encuesta')">Cerrar</button>
+          </div>
+        </form>
       </div>
     </div>
 
     <div *ngIf="historialVisible" class="modal">
       <div class="modal-content">
       <h3>Finalizar Turno</h3>
-      <textarea [(ngModel)]="comentario" placeholder="Comentario:"></textarea>
-      <textarea [(ngModel)]="diagnostico" placeholder="Diagnóstico:"></textarea>
+      <textarea [(ngModel)]="comentario" placeholder="Reseña:"></textarea>
       <form [formGroup]="formHistorial" (ngSubmit)="finalizarTurno()">
         
   
@@ -212,6 +270,197 @@
               <input id="clave3" formControlName="clave3" placeholder="Clave" />
               <input id="valor3" formControlName="valor3" placeholder="Valor" />
             </div>
+          </div>
+  
+          <div class="modal-buttons">
+            <button [disabled]="!this.formHistorial.valid" >Confirmar</button>
+            <button (click)="cerrarModal('historial')">Cerrar</button>
+          </div>
+  
+        </form>
+      </div>
+    </div>
+
+
+
+  </div>
+
+  <div class="contenedor" *ngIf="sesion.esEspecialista()">
+    <h1>Mis Turnos</h1>
+    <div class="filtros">
+      <div class="filtros">
+          <input type="text" id="buscar" placeholder="Buscar por palabra clave (nombre, estado, historial clínico, etc)" [(ngModel)]="buscador" >
+      </div>
+    </div>
+    <div class="tabla-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Paciente</th>
+            <th>Especialidad</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Historial Clínico Estático</th>
+            <th>Historial Clínico Dinámico</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let turno of obtenerTurnosFiltradosEspecialista()">
+            <td>{{ turno.usuarioNombre }}</td>
+            <td>{{ turno.especialidad }}</td>
+            <td>{{ turno.fechaTurno }}</td>
+            <td>
+              <span [appEstadoTurno]="turno.estado">
+                {{ turno.estado }}
+              </span>
+            </td>
+            <td>
+              <p *ngIf="turno.historialClinico">Altura: {{ turno.historialClinico.altura }} cm.</p>
+              <p *ngIf="turno.historialClinico">Peso: {{ turno.historialClinico.peso }} kg.</p>
+              <p *ngIf="turno.historialClinico">Temperatura: {{ turno.historialClinico.temperatura }} °C.</p>
+              <p *ngIf="turno.historialClinico">Presión: {{ turno.historialClinico.presion }} mmHg.</p>
+              
+            </td>
+            <td>
+              <p *ngIf="turno.historialClinico?.datoDinamico1">{{ turno.historialClinico?.datoDinamico1?.clave }} : {{turno.historialClinico?.datoDinamico1?.valor}}</p>
+              <p *ngIf="turno.historialClinico?.datoDinamico2">{{ turno.historialClinico?.datoDinamico2?.clave }} : {{turno.historialClinico?.datoDinamico2?.valor}}</p>
+              <p *ngIf="turno.historialClinico?.datoDinamico3">{{ turno.historialClinico?.datoDinamico3?.clave }} : {{turno.historialClinico?.datoDinamico3?.valor}}</p>
+              <p *ngIf="turno.historialClinico?.estres">Nivel de estrés: {{turno?.historialClinico?.estres}}</p>
+              <p *ngIf="turno.historialClinico?.diasSintomas">Días con síntomas: {{turno?.historialClinico?.diasSintomas}}</p>
+              <p *ngIf="turno.historialClinico?.fumador">Es fumador: {{turno.historialClinico?.fumador | booleanTexto}}</p>
+            </td>
+            <td>
+              
+              <button class="btn" *ngIf="turno.estado == estadoTurno.pendiente" (click)="mostrarComentario(turno, 'cancelar')">Cancelar Turno</button>
+              <button class="btn" *ngIf="turno.estado == estadoTurno.pendiente" (click)="mostrarComentario(turno, 'rechazar')">Rechazar turno </button>
+              <button class="btn" *ngIf="turno.estado ==  estadoTurno.pendiente" (click)="aceptarTurno(turno)"> Aceptar turno</button>
+              <button class="btn" *ngIf="turno.estado == estadoTurno.aceptado" (click)="mostrarHistorial(turno)"> Finalizar Turno</button>
+              <button class="btn" *ngIf="turno.resena!= null"  (click)="mostrarResena(turno)"> Ver Reseña</button>
+              <button class="btn" *ngIf="turno.estado == estadoTurno.finalizado && turno.resena!=null && turno.encuesta!=null" (click)="verEncuesta(turno)"> Ver Encuesta</button>
+              <button class="btn" *ngIf="turno.comentario!=null"  (click)="verComentario(turno)">Ver Comentario </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <div *ngIf="comentarioVisible" class="modal">
+      <div class="modal-content">
+        <h3 *ngIf="accion =='cancelar'">Cancelar Turno</h3>
+        <h3 *ngIf="accion =='rechazar'">Rechazar Turno</h3>
+        <!-- <h3 *ngIf="accion =='finalizar'">Finalizar Turno</h3> -->
+        <textarea [(ngModel)]="comentario" placeholder="Motivo:"></textarea>
+        <div class="modal-buttons">
+          <button *ngIf="accion =='cancelar'" (click)="cancelarTurno()">Confirmar</button>
+          <button *ngIf="accion =='rechazar'" (click)="rechazarTurno()">Confirmar</button>
+          <!-- <button *ngIf="accion =='finalizar'" (click)="finalizarTurno()">Confirmar</button> -->
+          <button (click)="cerrarModal('comentario')">Cerrar</button>
+        </div>
+      </div>
+    </div>
+    
+    <div *ngIf="mostrarModalComentario" class="modal">
+      <div class="modal-content" *ngIf="turnoSeleccionado?.comentario !=null">
+        <h3>Comentario</h3>
+        <p>Realizado por {{turnoSeleccionado?.comentario?.usuario}} ({{turnoSeleccionado?.comentario?.tipoUsuario}})</p>
+        <p>Comentario: {{turnoSeleccionado?.comentario?.comentario}}</p>
+        <p>Acción: {{turnoSeleccionado?.comentario?.accion}}</p>
+        <div class="modal-buttons">
+          <button (click)="cerrarModal('comentarioModal')">Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="mostrarResultadosEncuesta" class="modal">
+      <div class="modal-content" *ngIf="turnoSeleccionado?.encuesta !=null">
+        <h3>Respuestas de encuesta</h3>
+        <p>Realizado por {{turnoSeleccionado?.usuarioNombre}} (Paciente)</p>
+        <p>Calificación sobre la atención del personal: {{turnoSeleccionado?.encuesta?.atencionPersonal}}</p>
+        <p>Calificación sobre la clínica y sus instalaciónes: {{turnoSeleccionado?.encuesta?.calificacionClinica}}</p>
+        <p>¿Recomendaría nuestra clínica?: {{turnoSeleccionado?.encuesta?.recomendacion}} </p>
+        <div class="modal-buttons">
+          <button (click)="cerrarModal('resultadoEncuesta')">Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="resenaVisible" class="modal">
+      <div class="modal-content" *ngIf="turnoSeleccionado?.resena !=null">
+        <h3>Reseña</h3>
+        <p>Realizado por {{turnoSeleccionado?.resena?.usuario}} ({{turnoSeleccionado?.resena?.tipoUsuario}})</p>
+        <p>Reseña: {{turnoSeleccionado?.resena?.comentario}}</p>
+        <p>Acción: {{turnoSeleccionado?.resena?.accion}} por el usuario</p>
+        <div class="modal-buttons">
+          <button (click)="cerrarModal('resena')">Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="historialVisible" class="modal">
+      <div class="modal-content">
+      <h3>Finalizar Turno</h3>
+      <textarea [(ngModel)]="resena" placeholder="Reseña:"></textarea>
+      <form [formGroup]="formHistorial" (ngSubmit)="finalizarTurno()">
+        
+  
+          <div  class="fijos">
+            <div class="row">
+              <input id="altura" formControlName="altura" placeholder="Altura (cm)" />
+              <div [ngClass]="{'visible': formViewer.controlConError(formHistorial, 'altura')}" class="error-message">
+                <p>{{ formViewer.mensajeError(formHistorial, 'altura') }}</p>
+              </div>
+            </div>
+
+            <div class="row">
+              <input id="peso" formControlName="peso" placeholder="Peso (kg)" />
+              <div [ngClass]="{'visible': formViewer.controlConError(formHistorial, 'peso')}" class="error-message">
+                <p>{{ formViewer.mensajeError(formHistorial, 'peso') }}</p>
+              </div>
+            </div>
+            <div class="row">
+              <input id="temperatura" formControlName="temperatura" placeholder="Temperatura (°C)" />
+              <div [ngClass]="{'visible': formViewer.controlConError(formHistorial, 'temperatura')}" class="error-message">
+                <p>{{ formViewer.mensajeError(formHistorial, 'temperatura') }}</p>
+              </div>
+            </div>
+            <div class="row">
+              <input id="presion" formControlName="presion" placeholder="Presión" />
+              <div [ngClass]="{'visible': formViewer.controlConError(formHistorial, 'presion')}" class="error-message">
+                <p>{{ formViewer.mensajeError(formHistorial, 'presion') }}</p>
+              </div>
+            </div>
+          </div>
+  
+          <div class="dinamicos">
+            <h2>Datos opcionales</h2>
+            <div class="row">
+              <input id="clave1" formControlName="clave1" placeholder="Clave" />
+              <input id="valor1" formControlName="valor1" placeholder="Valor" />
+            </div>
+            <div class="row">
+              <input id="clave2" formControlName="clave2" placeholder="Clave" />
+              <input id="valor2" formControlName="valor2" placeholder="Valor" />
+            </div>
+            <div class="row">
+              <input id="clave3" formControlName="clave3" placeholder="Clave" />
+              <input id="valor3" formControlName="valor3" placeholder="Valor" />
+            </div>
+              <!--NUEVOS-->
+            <div class="row">
+              <label for="rango">Nivel de stress (0-10):</label>
+              <input type="range" id="estres" formControlName="estres" min="0" max="10" />
+              <span>Nivel elegido: {{ formHistorial.get('estres')?.value }}</span>
+            </div>
+            <div class="row">
+              <input type="number" id="numero" formControlName="sintomas" placeholder="Ingrese cantidad de días con síntomas" />
+            </div>
+            
+            <div class="row form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="fumador" formControlName="fumador">
+              <label class="form-check-label" for="fumador"> Fumador?: {{ formHistorial.get('fumador')?.value ? 'Sí' : 'No' }}</label>
+            </div>
+            
           </div>
   
           <div class="modal-buttons">

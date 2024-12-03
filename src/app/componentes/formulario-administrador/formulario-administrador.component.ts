@@ -10,11 +10,12 @@ import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RecaptchaModule } from "ng-recaptcha";
 import { StorageService } from '../../servicios/storage.service';
+import { RickaptchaComponent } from '../rickaptcha/rickaptcha.component';
 
 @Component({
   selector: 'app-formulario-administrador',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RecaptchaModule],
+  imports: [ReactiveFormsModule, CommonModule, RecaptchaModule, RickaptchaComponent],
   templateUrl: './formulario-administrador.component.html',
   styleUrl: './formulario-administrador.component.css'
 })
@@ -22,7 +23,7 @@ export class FormularioAdministradorComponent {
 
   altaPersona!: FormGroup;
   botonSeleccionado: string = '';
-  captchaResponse : string | null=null;
+  captchaResponse : boolean= false;
   foto1! : File;
 
   @Output() loadingChange = new EventEmitter<boolean>();
@@ -138,7 +139,7 @@ export class FormularioAdministradorComponent {
     this.altaPersona.reset();
     this.botonSeleccionado = usuario;
   }
-  resolved(captchaResponse: string | null) {
+  resolved(captchaResponse: boolean) {
     this.captchaResponse = captchaResponse;
 
   }

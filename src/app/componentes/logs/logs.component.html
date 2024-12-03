@@ -1,0 +1,26 @@
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="text-center"> 
+            <h1>LOGS</h1>
+
+            <div *ngIf=" this.servicioLogger.loginsCollection.length > 0">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Usuario</th>
+                            <th scope="col">Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let login of this.servicioLogger.loginsCollection; let i = index">
+                            <td scope="row">{{ i + 1 }}</td>
+                            <td>{{ login.user }}</td>
+                            <td>{{ (login.fecha.seconds * 1000) | date:'dd-MM-yy HH:mm' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

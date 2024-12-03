@@ -1,23 +1,11 @@
 
-mat-header-cell, mat-cell {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-  }
-  
-  mat-cell img {
-    max-width: 150px;
-    height: auto;
-    border-radius: 5px;
-  }
-  .btn {
-    color: #fff;
-    font-size: 16px;
-    padding: 12px 30px;
-    border-radius: 50px;
-    box-shadow: 0px 1px 10px 0px #913b9ca6;
-    background-image: linear-gradient(135deg, #ac4a9f 10%, #b9719e 100%);
+.btn {
+  color: #fff;
+  font-size: 16px;
+  padding: 12px 30px;
+  border-radius: 50px;
+  box-shadow: 0px 1px 10px 0px #913b9ca6;
+  background-image: linear-gradient(135deg, #ac4a9f 10%, #b9719e 100%);
 }
 
 
@@ -42,16 +30,60 @@ mat-header-cell, mat-cell {
    gap: 16px; 
 }
 .example-card {
-  max-width: 400px;
+  width: 450px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.example-header{
+  padding: 0;
+  margin: 10px;
+}
+.contenido{
+  margin: 10px;
 }
 
-.example-header-image {
-  background-size: cover;
-}
 
+.img{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+}
 img{
   height: 200px;
   margin: auto;
   border-radius: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+/*HOVER IMAGEN*/
+
+
+img:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  width: 60%;
+
+}

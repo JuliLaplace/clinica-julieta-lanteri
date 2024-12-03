@@ -6,22 +6,39 @@ import { CommonModule } from '@angular/common';
 import { FormatoVacioPipe } from '../../pipes/formato-vacio.pipe';
 import { MatCardModule } from '@angular/material/card';
 import { TipoUsuario } from '../../enumerables/tipo-usuario';
-import { DataTurnosService } from '../../servicios/data-turnos.service';
+import { DataTurnosService, Turno } from '../../servicios/data-turnos.service';
 import * as XLSX from 'xlsx';
-
-
+import { HoverImagenDirective } from '../../directivas/hover-imagen.directive';
+import { PrefijoEspecialistaPipe } from '../../pipes/prefijo-especialista.pipe';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-tabla-usuarios',
   standalone: true,
-  imports: [MatTableModule, CommonModule, MatPaginatorModule, FormatoVacioPipe, MatCardModule],
+  imports: [MatTableModule, CommonModule, MatPaginatorModule, FormatoVacioPipe, MatCardModule, HoverImagenDirective, PrefijoEspecialistaPipe],
   templateUrl: './tabla-usuarios.component.html',
   styleUrl: './tabla-usuarios.component.css'
 })
 export class TablaUsuariosComponent {
-  displayedColumns: string[] = ['nombre', 'apellido', 'edad', 'dni', 'obraSocial', 'especialidad', 'habilitado', 'imagenPerfil1', 'imagenPerfil2'];
+  // displayedColumns: string[] = ['nombre', 'apellido', 'edad', 'dni', 'obraSocial', 'especialidad', 'habilitado', 'imagenPerfil1', 'imagenPerfil2'];
   usuariosVisibles : Usuario[] = [];
   agregarUsuario: boolean = false;
   tipoUsuario= TipoUsuario;
+  turnosUsuario1 : Turno[] | null = null;
+  popUp: boolean = false;
+
+  displayedColumns: string[] = [
+    'fecha',
+    'especialista',
+    'especialidad',
+    'altura', 
+    'peso', 
+    'temperatura', 
+    'presion', 
+    'datoDinamico1', 
+    'datoDinamico2', 
+    'datoDinamico3'
+  ];
+
   constructor(public dataUsuarios: DataUsuariosService, public turnos: DataTurnosService) {
     this.usuariosVisibles = dataUsuarios.coleccionUsuarios
   }
@@ -69,6 +86,7 @@ export class TablaUsuariosComponent {
     }));
   
     if (datosExcel.length === 0) {
+      Swal.fire("No hay turnos guardados para este usuario.");
       console.error('No hay turnos para este usuario.');
       return;
     }
@@ -81,4 +99,17 @@ export class TablaUsuariosComponent {
     XLSX.writeFile(libro, nombreArchivo);
   }
 
+  verHistorialClinico(paciente: Usuario): void {
+    this.turnosUsuario1 = this.turnos.coleccionTurnos.filter(turno => turno.usuario == paciente.mail && (turno.historialClinico));
+    console.log('Turnos del paciente:', this.turnosUsuario1);
+    console.log('Turnos en el modal:', this.turnosUsuario1);
+    this.mostrarPopUp();
+  }
+
+  mostrarPopUp() {
+    this.popUp=true
+  }
+  cerrarPopUp() {
+    this.popUp = false;
+  }
 }

@@ -1,13 +1,14 @@
 .contenedor{
     display: flex;
+    flex-direction: row;
     align-items: center;
-    justify-content: start;
+    justify-content: space-around;
 }
 
-.seccion, .seccion-especialista{
+/* .seccion, .seccion-especialista{
     margin-top: 20px;
     margin-bottom: 20px;
-}
+} */
 .seccion-especialista{
     display: flex;
     justify-content: center; 

@@ -1,0 +1,183 @@
+<div class="contenedor" *ngIf="sesion.esPaciente()">
+    <h1>Historial Clínico</h1>
+    <div class="tabla-container">
+        <div class="row">
+            <select class="form-select"  [(ngModel)]="especialidadSeleccionada">
+                <option selected>Todos</option>
+                <option *ngFor="let especialidad of especialidades" [value]="especialidad">
+                  {{ especialidad }}
+                </option>
+              </select>
+            <button class="btn" (click)="descargarPDF()">Descargar Historial Clínico</button>
+        </div>
+        <!-- <div class="tabla-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Especialista</th>
+                  <th>Especialidad</th>
+                  <th>Fecha</th>
+                  <th>Hora</th>
+                  <th>Estado</th>
+                  <th>Historial Clínico Estático</th>
+                  <th>Historial Clínico Dinámico</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let turno of obtenerTurnosFiltradosPaciente()">
+                  <td>{{ turno.especialistaNombre }}</td>
+                  <td>{{ turno.especialidad }}</td>
+                  <td>{{ turno.fechaTurno }}</td>
+                  <td>{{ turno.horaTurno | formatoHora }}</td>
+                  <td>
+                    <span  [appEstadoTurno]="turno.estado">
+                      {{ turno.estado }}
+                    </span>
+                  </td>
+                  <td>
+                    <p *ngIf="turno.historialClinico">Altura: {{ turno.historialClinico.altura }} cm.</p>
+                    <p *ngIf="turno.historialClinico">Peso: {{ turno.historialClinico.peso }} kg.</p>
+                    <p *ngIf="turno.historialClinico">Temperatura: {{ turno.historialClinico.temperatura }} °C.</p>
+                    <p *ngIf="turno.historialClinico">Presión: {{ turno.historialClinico.presion }} mmHg.</p>
+                    
+                  </td>
+                  <td>
+                    <p *ngIf="turno.historialClinico?.datoDinamico1">{{ turno.historialClinico?.datoDinamico1?.clave }} : {{turno.historialClinico?.datoDinamico1?.valor}}</p>
+                    <p *ngIf="turno.historialClinico?.datoDinamico2">{{ turno.historialClinico?.datoDinamico2?.clave }} : {{turno.historialClinico?.datoDinamico2?.valor}}</p>
+                    <p *ngIf="turno.historialClinico?.datoDinamico3">{{ turno.historialClinico?.datoDinamico3?.clave }} : {{turno.historialClinico?.datoDinamico3?.valor}}</p>
+         
+                  </td>
+                  
+                </tr>
+              </tbody>
+            </table>
+        </div> -->
+
+        <div class="modal-content">
+          <div *ngIf="!turnosUsuario1 || turnosUsuario1.length == 0">
+            <h3>El paciente aún no cuenta con historial clínico</h3>
+    
+          </div>
+          <div *ngIf="turnosUsuario1 && turnosUsuario1.length > 0">
+            <h3 *ngIf="turnosUsuario1">Historial Clínico {{turnosUsuario1[0].usuarioNombre}}</h3>
+            <table mat-table [dataSource]="turnosUsuario1" class="mat-elevation-z8">
+              
+              <ng-container matColumnDef="fecha">
+                <th mat-header-cell *matHeaderCellDef>Fecha</th>
+                <td mat-cell *matCellDef="let element">{{ element.fechaTurno}}</td>
+              </ng-container>
+    
+              <ng-container matColumnDef="especialista">
+                <th mat-header-cell *matHeaderCellDef>Especialista</th>
+                <td mat-cell *matCellDef="let element">{{ element.especialistaNombre | prefijoEspecialista:tipoUsuario.especialista}}</td>
+              </ng-container>
+    
+              <ng-container matColumnDef="especialidad">
+                <th mat-header-cell *matHeaderCellDef>Especialidad</th>
+                <td mat-cell *matCellDef="let element">{{ element.especialidad}}</td>
+              </ng-container>
+    
+              <ng-container matColumnDef="altura">
+                <th mat-header-cell *matHeaderCellDef>Altura</th>
+                <td mat-cell *matCellDef="let element">{{ element.historialClinico.altura | formatoVacio }} cm</td>
+              </ng-container>
+      
+              
+              <ng-container matColumnDef="peso">
+                <th mat-header-cell *matHeaderCellDef>Peso</th>
+                <td mat-cell *matCellDef="let element">{{ element.historialClinico.peso | formatoVacio }} kg</td>
+              </ng-container>
+      
+             
+              <ng-container matColumnDef="temperatura">
+                <th mat-header-cell *matHeaderCellDef>Temperatura</th>
+                <td mat-cell *matCellDef="let element">{{ element.historialClinico.temperatura | formatoVacio }} °C</td>
+              </ng-container>
+      
+              
+              <ng-container matColumnDef="presion">
+                <th mat-header-cell *matHeaderCellDef>Presión</th>
+                <td mat-cell *matCellDef="let element">{{ element.historialClinico.presion | formatoVacio }} mmHg</td>
+              </ng-container>
+      
+              <!-- Datos Dinámicos -->
+               
+              <ng-container matColumnDef="datosDinamicos">
+                <th mat-header-cell *matHeaderCellDef>Datos dinámicos</th>
+                <td mat-cell *matCellDef="let element"> 
+                  <!-- {{element.historialClinico.datoDinamico1.clave | formatoVacio }} : {{ element.historialClinico?.datoDinamico1?.valor | formatoVacio }} -->
+                 <p *ngIf="element.historialClinico?.datoDinamico1?.clave ">
+                  {{ element.historialClinico?.datoDinamico1?.clave 
+                    ? (element.historialClinico.datoDinamico1.clave + ' : ' + element.historialClinico.datoDinamico1.valor) 
+                    : '--' }} 
+                 </p> 
+                 <p *ngIf="element.historialClinico?.datoDinamico2?.clave ">
+                    {{ element.historialClinico?.datoDinamico2?.clave 
+                      ? (element.historialClinico.datoDinamico2.clave + ' : ' + element.historialClinico.datoDinamico2.valor) 
+                      : '--' }}
+                 </p>
+                 <p *ngIf="element.historialClinico?.datoDinamico3?.clave ">
+                       {{ element.historialClinico?.datoDinamico3?.clave 
+                        ? (element.historialClinico.datoDinamico3.clave + ' : ' + element.historialClinico.datoDinamico3.valor) 
+                        : '--' }}
+                 </p>
+                </td>
+              </ng-container>
+      
+              <!-- <ng-container matColumnDef="datoDinamico2">
+                <th mat-header-cell *matHeaderCellDef>Dato 2</th>
+                <td mat-cell *matCellDef="let element">
+                
+                  {{ element.historialClinico?.datoDinamico2?.clave 
+                    ? (element.historialClinico.datoDinamico2.clave + ' : ' + element.historialClinico.datoDinamico2.valor) 
+                    : '--' }}
+                </td>
+              </ng-container>
+      
+              <ng-container matColumnDef="datoDinamico3">
+                <th mat-header-cell *matHeaderCellDef>Dato 3</th>
+                <td mat-cell *matCellDef="let element">
+                 
+                  {{ element.historialClinico?.datoDinamico3?.clave 
+                    ? (element.historialClinico.datoDinamico3.clave + ' : ' + element.historialClinico.datoDinamico3.valor) 
+                    : '--' }}
+                </td>
+              </ng-container> -->
+    
+              <ng-container matColumnDef="otrosDatos">
+                <th mat-header-cell *matHeaderCellDef>Otros datos</th>
+                <td mat-cell *matCellDef="let element">
+                  <p *ngIf="element.historialClinico?.estres">
+                    {{element.historialClinico?.estres ? ('Nivel de estrés: ' + element.historialClinico.estres ) : '--' }}
+                  </p>
+                  <p *ngIf="element.historialClinico?.diasSintomas">
+                    {{ element.historialClinico?.diasSintomas ? ('Días con síntomas: ' + element.historialClinico.diasSintomas) : '--' }}
+                  </p>
+
+                  <p *ngIf="element.historialClinico?.fumador">
+                    {{ element.historialClinico?.fumador ? ('Es fumador: ' + (element.historialClinico.fumador | booleanTexto)) : '--' }}
+                  </p>
+                </td>
+              </ng-container>
+    
+              <!-- <ng-container matColumnDef="sintomas">
+                <th mat-header-cell *matHeaderCellDef>Dato 5</th>
+                <td mat-cell *matCellDef="let element">
+                </td>
+              </ng-container>
+    
+              <ng-container matColumnDef="fumador">
+                <th mat-header-cell *matHeaderCellDef>Dato 6</th>
+                <td mat-cell *matCellDef="let element">
+                 
+                </td>
+              </ng-container> -->
+      
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </div>
+        </div>
+    </div>
+  
+  </div>

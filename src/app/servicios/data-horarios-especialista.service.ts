@@ -25,24 +25,22 @@ export class DataHorariosEspecialistaService {
     
   }
 
- 
-
   obtenerHorariosEspecialista(){
     let col = collection(this.firestore, 'horarios-especialistas');
     const observable = collectionData(col);
     observable.subscribe((respuesta:any) => {
       this.coleccionHorarios = respuesta;
-    })
+    });
 
   }
 
   async crearRegistro(horarios: HorarioSemanal, mail: string): Promise<void> {
     let col = collection(this.firestore, 'horarios-especialistas');
     await this.deleteOne(mail);
-    addDoc(col, horarios)
+    addDoc(col, horarios);
   }
 
-  private async deleteOne(mail: string){
+  async deleteOne(mail: string){
     let col = collection(this.firestore, 'horarios-especialistas');
     const fetchQuery = query(
       col, 

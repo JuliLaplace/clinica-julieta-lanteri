@@ -5,7 +5,7 @@
         <h4 class="my-0">Datos del Administrador</h4>
       </div>
       <div class="card-body">
-        <form [formGroup]="altaPersona" (ngSubmit)="cargarPersona()">
+        <form [formGroup]="altaPersona" >
 
           <div class="row g-3">
 
@@ -65,12 +65,13 @@
           </div>
 
           <div class="captcha">
-            <re-captcha (resolved)="resolved($event)" siteKey="6LfjUXoqAAAAAK28LGBZ8H4X4mv19HBcHPqL3PfB"></re-captcha>
+            <!-- <re-captcha (resolved)="resolved($event)" siteKey="6LfjUXoqAAAAAK28LGBZ8H4X4mv19HBcHPqL3PfB"></re-captcha> -->
+            <rickaptcha (resolved)="resolved($event)"></rickaptcha>
           </div>
 
           <hr class="my-4">
           <div class="btn-registrar">
-            <button class="w-50 btn btn-primary" type="submit" [disabled]="!this.altaPersona.valid || !captchaResponse || !foto1">Agregar
+            <button class="w-50 btn btn-primary" (click)="cargarPersona()" [disabled]="!this.altaPersona.valid || !captchaResponse || !foto1">Agregar
               Administrador</button>
           </div>
         </form>

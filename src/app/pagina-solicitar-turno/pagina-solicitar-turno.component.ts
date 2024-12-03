@@ -89,8 +89,9 @@ export class PaginaSolicitarTurnoComponent implements OnInit  {
         estado : EstadoTurno.pendiente,
         comentario : null,
         resena : null,
-        diagnostico: null,
-        historialClinico : null
+        historialClinico : null,
+        calificacion : null,
+        encuesta: null
       }
 
       this.dataTurnos.crearRegistro(turno)

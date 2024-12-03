@@ -41,6 +41,9 @@ input[readonly] {
     font-weight: bold;
     color: black;
 }
+.error {
+    outline: 2px solid red;
+}
 
 h1{
     margin: 20px;
@@ -54,19 +57,27 @@ h1{
     padding: 12px 30px;
     border-radius: 50px;
     box-shadow: 0px 1px 10px 0px #913b9ca6;
-    background-image: linear-gradient(135deg, #ac4a9f 10%, #b9719e 100%);
+    background-color: #ac4a9f; 
+    margin: 10px;
+}
+.btn:hover{
+    background-color: #704cb6;
 }
 
 
 .btn-carga {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
     margin-top: 10px;
 
 }
 
-.oculto{
+.oculto {
     display: none;
+}
+
+.seleccionado {
+    background-color: #b9719e;
 }

@@ -5,6 +5,7 @@ import { EstadoTurno } from '../enumerables/estado-turno';
 import { SesionService } from './sesion.service';
 import { Usuario } from './data-usuarios.service';
 import { TipoUsuario } from '../enumerables/tipo-usuario';
+import { EstadisticasService } from './estadisticas.service';
 
 export interface Turno {
   id: string;
@@ -18,8 +19,9 @@ export interface Turno {
   estado : EstadoTurno,
   comentario: Comentario | null,
   resena : Comentario | null,
-  diagnostico: string | null,
-  historialClinico : HistorialClinico | null
+  historialClinico : HistorialClinico | null,
+  calificacion: number | null,
+  encuesta: Encuesta | null,
 }
 
 export interface Comentario{
@@ -29,18 +31,26 @@ export interface Comentario{
   accion: EstadoTurno
 }
 export interface HistorialClinico{
-  altura: number,
-  peso: number,
-  temperatura: number,
-  presion: number,
+  altura: string,
+  peso: string,
+  temperatura: string,
+  presion: string,
   datoDinamico1 : Dato | null,
   datoDinamico2 : Dato | null,
-  datoDinamico3 : Dato | null
+  datoDinamico3 : Dato | null,
+  estres : number | null,
+  diasSintomas : number | null,
+  fumador : boolean | null,
 }
 
 export interface Dato{
   clave: string,
   valor: string
+}
+export interface Encuesta{
+  atencionPersonal: string,
+  calificacionClinica: string,
+  recomendacion: string
 }
 
 @Injectable({
@@ -54,7 +64,7 @@ export class DataTurnosService {
 
   public turno: Turno | null = null;
 
-  constructor(private firestore: Firestore, private sesion : SesionService) { 
+  constructor(private firestore: Firestore, private sesion : SesionService, private dataEstadisticas: EstadisticasService) { 
     this.obtenerDatos();
   }
 
@@ -74,14 +84,18 @@ export class DataTurnosService {
       this.coleccionTurnos = respuesta;
       
       this.coleccionTurnosPaciente = this.coleccionTurnos.filter(
-        (turno) => turno.usuario === this.sesion.getUsuario()
+        (turno) => turno.usuario == this.sesion.getUsuario()
       );
       this.coleccionTurnosEspecialista = this.coleccionTurnos.filter(
-        (turno) => turno.especialista === this.sesion.getUsuario()
-        
+        (turno) => turno.especialista == this.sesion.getUsuario()
       );
-      
     })
+  }
+
+  obtenerDatosObservable(){
+    let col = collection(this.firestore, 'turnos');
+    const observable = collectionData(col, {idField: 'id'});
+    return observable;
   }
 
   private modificarRegistro(turno: Turno, data: any) {
@@ -114,18 +128,29 @@ export class DataTurnosService {
       comentario: comentario,
     });
   }
-  public cambiarEstadoFinalizado(turno: Turno, comentario: Comentario, diagnostico:string, historial : HistorialClinico) {
+  public cambiarEstadoFinalizado(turno: Turno, comentario: Comentario, historial : HistorialClinico) {
     this.cambiarEstadoTurno(turno, {
       estado: EstadoTurno.finalizado,
-      comentario: comentario,
-      diagnostico:  diagnostico,
-      historial: historial,
+      resena: comentario,
+      historialClinico: historial,
     });
   }
 
   public cambiarEstadoAceptado(turno: Turno) {
     this.cambiarEstadoTurno(turno, {
       estado: EstadoTurno.aceptado,
+    });
+  }
+
+  public agregarCalificacion(turno: Turno, calificacion: number, comentario: Comentario) {
+    this.modificarRegistro(turno, {
+      calificacion: calificacion,
+      comentario: comentario,
+    });
+  }
+  public agregarEncuesta(turno: Turno, encuesta: Encuesta) {
+    this.modificarRegistro(turno, {
+      encuesta: encuesta,
     });
   }
 

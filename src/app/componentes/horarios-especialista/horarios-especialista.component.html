@@ -1,11 +1,7 @@
 
-<h1>Mis Horarios</h1>
-
 <div class="tabla">
+  <h1>Mis Horarios</h1>
   <div class="fila-horarios">
-
-    
-
     <div *ngFor="let dia of dias; let i = index" class="tabla-horarios">
 
       <div *ngFor="let especialidad of sesion.usuarioBD?.especialidad">
@@ -16,20 +12,24 @@
         <input type="text" [placeholder]="dia" readonly />
         <div class="select">
             <input type="text" placeholder="Desde" readonly />
-            <select  [(ngModel)]="selecciones[i].desde" size="5">
-              <option *ngFor="let horario of horarios" [value]="horario" [class.oculto]="esSabado(horario, i)">{{ horario }}</option>
+            <select (ngModelChange)="selecciones[i].hasta = ''" [(ngModel)]="selecciones[i].desde" size="5" [class.error]="!selecciones[i].desde && selecciones[i].hasta">
+              <option *ngFor="let horario of horarios" [value]="horario" [class.seleccionado]="horario==selecciones[i].desde" [class.oculto]="esSabado(horario, i)" >{{ horario }}</option>
             </select>
         </div>
         <div class="select">
             <input type="text" placeholder="Hasta" readonly />
-            <select  [(ngModel)]="selecciones[i].hasta" size="5">
-                <option *ngFor="let horario of horarios" [value]="horario" [class.oculto]="esSabado(horario, i) || !esHorarioValido(horario, selecciones[i].desde) ">{{ horario }}</option>
+            <select  [(ngModel)]="selecciones[i].hasta" size="5" [class.error]="selecciones[i].desde && !selecciones[i].hasta">
+                <option *ngFor="let horario of horarios" [value]="horario" [class.seleccionado]="horario==selecciones[i].hasta" [class.oculto]="esSabado(horario, i) || !esHorarioValido(horario, selecciones[i].desde) ">{{ horario }}</option>
               </select>
         </div>
+        <button (click)="selecciones[i].hasta =''; selecciones[i].desde=''" class="btn" [disabled]="!dias">
+          <fa-icon [icon]="iconoTacho" style="color: white;" size="xl"></fa-icon>
+        </button>
     </div>
   </div>
   <div class="btn-carga">
-    <button (click)="cargarHorariosEspecialista()" class="btn">Cargar horarios</button>
+    <button (click)="cargarHorariosEspecialista()" class="btn" [disabled]="!esHorarioSeleccionado()">Cargar horarios</button>
+    <button (click)="borrarHorariosEspecialista()" class="btn" [disabled]="!dias">Borrar todos los horarios</button>
   </div>
 
 </div>
